@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   watchguard_bonus.c                                 :+:      :+:    :+:   */
+/*   lifeguard_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:51:32 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/07 13:51:33 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/09 16:35:19 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	set_offset(t_philo *p)
 		printf("Error: gettimeofday\n");
 		return (1);
 	}
-	i = p->d->n_philo;
+	i = p->d->qty;
 	tmp = p;
 	while (i--)
 	{
@@ -66,7 +66,7 @@ int	printstate(t_philo *p, int state, struct timeval t)
 		if (state == FORK)
 			printf("%lld %d has taken a fork\n", \
 				deltatime(p->d->offset, t), p->id);
-		else if (state == EATING)
+		else if (state == EAT)
 			printf("%lld %d is eating\n", deltatime(p->d->offset, t), p->id);
 		else if (state == SLEEPING)
 			printf("%lld %d is sleeping\n", deltatime(p->d->offset, t), p->id);

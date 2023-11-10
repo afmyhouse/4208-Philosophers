@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   readinput.c                                        :+:      :+:    :+:   */
+/*   argparse.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:47:28 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/07 13:47:31 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/09 15:31:52 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	datacheck(t_data *d)
 	int	r;
 
 	r = 0;
-	if (d->n_philo < 1 || d->n_philo > INTMAX || d->n_philo < INTMIN)
+	if (d->qty < 1 || d->qty > INTMAX)// || d->qty < INTMIN)
 		r = 1;
 	if (d->t_die < 0 || d->t_die > INTMAX || d->t_die < INTMIN)
 		r = 1;
@@ -76,7 +76,7 @@ t_data	*get_data(char **argv)
 
 	data = malloc(sizeof(t_data));
 	ft_bzero(data, sizeof(t_data));
-	data->n_philo = ft_long_atoi(argv[1]);
+	data->qty = ft_long_atoi(argv[1]);
 	data->t_die = ft_long_atoi(argv[2]);
 	data->t_eat = ft_long_atoi(argv[3]);
 	data->t_sleep = ft_long_atoi(argv[4]);
@@ -85,7 +85,7 @@ t_data	*get_data(char **argv)
 	{
 		data->cap = malloc(sizeof(long long));
 		*data->cap = ft_long_atoi(argv[5]);
-		data->end = 1 - data->n_philo;
+		data->end = 1 - data->qty;
 	}
 	if (datacheck(data) == 1 && datafree(data) == 0)
 		return (NULL);

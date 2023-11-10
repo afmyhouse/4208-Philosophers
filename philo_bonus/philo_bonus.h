@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:53:22 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/07 13:53:23 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/09 15:20:15 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 
 typedef struct s_data
 {
-	int				n_philo;
+	int				qty;
 	long long		t_die;
 	long long		t_eat;
 	long long		t_sleep;

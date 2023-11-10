@@ -32,7 +32,7 @@ int	eat(t_philo *p)
 		printf("Error: sem_wait (sem_death)\n");
 		return (1);
 	}
-	printstate(p, EATING, now(p));
+	printstate(p, EAT, now(p));
 	usleep(ft_min(p->d->t_eat, p->d->t_die));
 	if (drop_fork(p) == 1 || drop_fork(p) == 1)
 		return (1);
@@ -62,7 +62,7 @@ int	philo_routine(t_philo *p)
 	set_time(p);
 	while (1)
 	{
-		if (p->d->n_philo < 2)
+		if (p->d->qty < 2)
 			continue ;
 		sem_wait(p->d->sem_go);
 		if (grab_fork(p) == 0 && grab_fork(p) == 0)

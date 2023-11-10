@@ -41,7 +41,7 @@ t_philo	*philo_init(t_data *data)
 	p = NULL;
 	new = NULL;
 	i = 0;
-	while (++i <= data->n_philo)
+	while (++i <= data->qty)
 	{
 		new = philo_new(i, data);
 		if (!new)
@@ -62,7 +62,7 @@ int	set_processes(t_philo *p)
 	pthread_t	thread;
 
 	tmp = p;
-	i = p->d->n_philo;
+	i = p->d->qty;
 	set_offset(p);
 	while (i--)
 	{
@@ -86,7 +86,7 @@ int	set_processes(t_philo *p)
 int	seminit(t_data *data)
 {
 	sem_unlink("forks");
-	data->sem_forks = sem_open("forks", O_CREAT, 0644, data->n_philo);
+	data->sem_forks = sem_open("forks", O_CREAT, 0644, data->qty);
 	if (data->sem_forks == SEM_FAILED)
 		return (1);
 	sem_unlink("print");
@@ -98,7 +98,7 @@ int	seminit(t_data *data)
 	if (data->sem_death == SEM_FAILED)
 		return (1);
 	sem_unlink("go");
-	data->sem_go = sem_open("go", O_CREAT, 0644, data->n_philo / 2);
+	data->sem_go = sem_open("go", O_CREAT, 0644, data->qty / 2);
 	if (data->sem_go == SEM_FAILED)
 		return (1);
 	sem_unlink("end");

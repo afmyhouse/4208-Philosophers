@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:48:08 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/07 13:48:09 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/09 15:20:15 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,12 @@ t_fork	*forkinit(t_philo *p)
 	t_fork	*f;
 	int		i;
 
-	f = malloc(sizeof(t_fork) * p->d->n_philo);
+	f = malloc(sizeof(t_fork) * p->d->qty);
 	if (!f)
 		return (NULL);
-	ft_bzero(f, sizeof(t_fork) * p->d->n_philo);
+	ft_bzero(f, sizeof(t_fork) * p->d->qty);
 	i = 0;
-	while (++i <= p->d->n_philo)
+	while (++i <= p->d->qty)
 	{
 		f[i - 1].mtx = malloc(sizeof(pthread_mutex_t));
 		if (!f[i - 1].mtx)
@@ -76,7 +76,7 @@ int	destroyer(t_data *d, t_fork *f)
 	int	i;
 
 	i = 0;
-	while (i++ < d->n_philo)
+	while (i++ < d->qty)
 	{
 		if (mtxdestroy(f[i - 1].mtx) != 0)
 			return (1);

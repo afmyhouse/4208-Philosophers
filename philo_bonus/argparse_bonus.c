@@ -44,7 +44,7 @@ int	datacheck(t_data *d)
 	int	r;
 
 	r = 0;
-	if (d->n_philo < 1 || d->n_philo > INTMAX || d->n_philo < INTMIN)
+	if (d->qty < 1 || d->qty > INTMAX)// || d->n_philo < INTMIN)
 		r = 1;
 	if (d->t_die < 0 || d->t_die > INTMAX || d->t_die < INTMIN)
 		r = 1;
@@ -65,7 +65,7 @@ t_data	*get_data(char **argv)
 
 	d = malloc(sizeof(t_data));
 	ft_bzero(d, sizeof(t_data));
-	d->n_philo = ft_long_atoi(argv[1]);
+	d->qty = ft_long_atoi(argv[1]);
 	d->t_die = ft_long_atoi(argv[2]);
 	d->t_eat = ft_long_atoi(argv[3]);
 	d->t_sleep = ft_long_atoi(argv[4]);
@@ -79,7 +79,7 @@ t_data	*get_data(char **argv)
 	d->t_die = d->t_die * 1000;
 	d->t_eat = d->t_eat * 1000;
 	d->t_sleep = d->t_sleep * 1000;
-	if (d->n_philo % 2 && (d->t_die - d->t_eat - d->t_sleep) / 2 > 0)
+	if (d->qty % 2 && (d->t_die - d->t_eat - d->t_sleep) / 2 > 0)
 		d->t_think = (d->t_die - d->t_eat - d->t_sleep) / 2;
 	return (d);
 }

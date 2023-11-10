@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_routine.c                                    :+:      :+:    :+:   */
+/*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:48:04 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/07 13:48:05 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/09 16:38:01 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,10 @@ int	eat(t_philo *p)
 	if (status == 0)
 	{
 		p->t0 = t;
-		printstate(p, EATING, t);
+		printstate(p, EAT, t);
 		usleep(ft_min(p->d->t_eat, p->d->t_die));
 		if (p->d->cap != NULL && ++p->meals == *p->d->cap)
-			endset(p, EATING);
+			endset(p, EAT);
 	}
 	if (drop_fork(p, 0) == 1 || drop_fork(p, 1) == 1)
 		return (1);
@@ -71,7 +71,7 @@ int	nap(t_philo *p)
 		return (status);
 	if (status == 0)
 	{
-		if (printstate(p, SLEEPING, t) == 1)
+		if (printstate(p, SLEEP, t) == 1)
 			return (1);
 		if (p->d->t_sleep + p->d->t_eat < p->d->t_die)
 			usleep(p->d->t_sleep);
@@ -89,7 +89,7 @@ int	think(t_philo *p)
 	status = deathcheck(p, &t);
 	if (endcheck(p) == -1)
 		return (status);
-	if (status == 1 || printstate(p, THINKING, t) == 1)
+	if (status == 1 || printstate(p, THINK, t) == 1)
 		return (1);
 	usleep(p->d->t_think);
 	return (0);

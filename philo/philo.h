@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:47:42 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/07 13:47:43 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/09 16:42:05 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@
 # include <pthread.h>
 
 # define FORK 0
-# define EATING 1
-# define SLEEPING 2
-# define THINKING 3
+# define EAT 1
+# define SLEEP 2
+# define THINK 3
 # define DEAD 4
 # define INTMAX	2147483647
 # define INTMIN	-2147483648
@@ -35,7 +35,7 @@ typedef struct s_fork
 
 typedef struct s_data
 {
-	int				n_philo;
+	int				qty;
 	long long		t_die;
 	long long		t_eat;
 	long long		t_sleep;

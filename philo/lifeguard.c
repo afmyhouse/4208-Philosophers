@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_bigbrother.c                                 :+:      :+:    :+:   */
+/*   lifeguard.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:43:54 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/07 13:43:55 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/09 16:47:12 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	endset(t_philo *p, int state)
 	{
 		if (state == DEAD)
 			p->d->end = 1;
-		if (p->d->cap != NULL && state == EATING)
+		if (p->d->cap != NULL && state == EAT)
 			p->d->end++;
 		if (pthread_mutex_unlock(p->d->mtx_end.mtx) != 0)
 		{
@@ -116,11 +116,11 @@ int	printstate(t_philo *p, int state, struct timeval t)
 		if (state == FORK)
 			printf("%lld %d has taken a fork\n", \
 				deltatime(p->d->offset, t), p->id);
-		else if (state == EATING)
+		else if (state == EAT)
 			printf("%lld %d is eating\n", deltatime(p->d->offset, t), p->id);
-		else if (state == SLEEPING)
+		else if (state == SLEEP)
 			printf("%lld %d is sleeping\n", deltatime(p->d->offset, t), p->id);
-		else if (state == THINKING)
+		else if (state == THINK)
 			printf("%lld %d is thinking\n", deltatime(p->d->offset, t), p->id);
 		else if (state == DEAD)
 			printf("%lld %d died\n", deltatime(p->d->offset, t), p->id);

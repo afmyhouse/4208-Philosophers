@@ -6,7 +6,7 @@
 #    By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/07 13:51:02 by antoda-s          #+#    #+#              #
-#    Updated: 2023/11/07 13:51:06 by antoda-s         ###   ########.fr        #
+#    Updated: 2023/11/09 15:15:12 by antoda-s         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,11 +14,11 @@ CC				=	cc
 RM				=	rm -f
 CFLAGS			=	-Wall -Wextra -Werror
 
-SRCS			=	philo_main_bonus.c philo_readinput_bonus.c \
-					philo_initializer_bonus.c philo_routine_bonus.c \
-					philo_bigbrother_bonus.c philo_waiter_bonus.c \
-					philo_free_bonus.c philo_utils_bonus.c \
-					philo_time_bonus.c \
+SRCS			=	main_bonus.c argparse_bonus.c \
+					init_bonus.c routine_bonus.c \
+					lifeguard_bonus.c waiter_bonus.c \
+					free_bonus.c utils_bonus.c \
+					time_bonus.c \
 
 OBJS			=	$(SRCS:.c=.o)
 

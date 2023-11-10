@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_initializer.c                                :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:44:02 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/07 13:44:03 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/09 15:20:15 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_philo	*philo_new(int id, t_data *data)
 	ft_bzero(f, sizeof(t_fork) * 2);
 	p->id = id;
 	p->d = data;
-	if (data->n_philo > 2 && id % 2 == 0)
+	if (data->qty > 2 && id % 2 == 0)
 		p->go = 1;
 	return (p);
 }
@@ -56,7 +56,7 @@ t_philo	*philo_init(t_data *data)
 	p = NULL;
 	new = NULL;
 	i = 0;
-	while (++i <= data->n_philo)
+	while (++i <= data->qty)
 	{
 		new = philo_new(i, data);
 		if (!new)
