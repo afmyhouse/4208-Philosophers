@@ -6,16 +6,16 @@
 #    By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/07 13:50:35 by antoda-s          #+#    #+#              #
-#    Updated: 2023/11/09 14:57:54 by antoda-s         ###   ########.fr        #
+#    Updated: 2023/11/10 12:59:07 by antoda-s         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC				=	cc
 RM				=	rm -f
-CFLAGS			=	-Wall -Wextra -Werror -fsanitize=address
-
+CF				=	-Wall -Wextra -Werror -fsanitize=memory -fPIE -pie
+CFS				=	-Wall -Wextra -Werror -fsanitize=thread
 SRCS			=	main.c argparse.c time.c init.c mutex.c routine.c \
-					lifeguard.c waiter.c free.c utils.c \
+					lifeguard.c waiter.c free.c ft_tools.c \
 
 OBJS			=	$(SRCS:.c=.o)
 
@@ -24,7 +24,10 @@ NAME			=	philo
 all:				$(NAME)
 
 $(NAME):			$(OBJS)
-					$(CC) $(CFLAGS) $(OBJS) -pthread -o $(NAME)
+					$(CC) $(CF) $(OBJS) -pthread -o $(NAME)
+
+msani:				$(OBJS)
+					$(CC) $(CFS) -g $(OBJS) -pthread -o $(NAME)
 
 clean:
 					$(RM) $(OBJS)

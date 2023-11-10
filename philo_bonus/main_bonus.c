@@ -6,7 +6,7 @@ int	main(int argc, char **argv)
 	t_data	*d;
 	t_philo	*p;
 
-	if (argccheck(argc) == 1 || inputcheck(argv) == 1)
+	if (valid_argc(argc) == 1 || valid_argv(argv) == 1)
 		return (1);
 	d = get_data(argv);
 	if (!d)

@@ -1,7 +1,7 @@
 
 #include "philo_bonus.h"
 
-int	argccheck(int argc)
+int	valid_argc(int argc)
 {
 	if (argc < 5 || argc > 6)
 	{
@@ -11,7 +11,7 @@ int	argccheck(int argc)
 	return (0);
 }
 
-int	inputcheck(char **argv)
+int	valid_argv(char **argv)
 {
 	int		i;
 	char	*t;
@@ -39,7 +39,7 @@ int	inputcheck(char **argv)
 	return (0);
 }
 
-int	datacheck(t_data *d)
+int	valid_args(t_data *d)
 {
 	int	r;
 
@@ -74,7 +74,7 @@ t_data	*get_data(char **argv)
 		d->cap = malloc(sizeof(long long));
 		*d->cap = ft_long_atoi(argv[5]);
 	}
-	if (datacheck(d) == 1 && datafree(d) == 0)
+	if (valid_args(d) == 1 && datafree(d) == 0)
 		return (NULL);
 	d->t_die = d->t_die * 1000;
 	d->t_eat = d->t_eat * 1000;

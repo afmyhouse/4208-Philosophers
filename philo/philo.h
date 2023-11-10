@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:47:42 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/09 16:42:05 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/10 12:44:49 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include <sys/time.h>
 # include <pthread.h>
+# include "philo_error.h"
 
 # define FORK 0
 # define EAT 1
@@ -63,9 +64,9 @@ typedef struct s_philo
 	struct s_philo		*next;
 }	t_philo;
 
-int			argccheck(int argc);
-int			inputcheck(char **argv);
-int			datacheck(t_data *d);
+int			valid_argc(int argc);
+int			valid_argv(char **argv);
+int			valid_args(t_data *d);
 t_data		*get_data(char **argv);
 
 int			set_time(struct timeval *t);

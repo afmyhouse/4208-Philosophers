@@ -6,23 +6,26 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:47:28 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/09 15:31:52 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/10 12:44:49 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	argccheck(int argc)
+int	valid_argc(int argc)
 {
 	if (argc < 5 || argc > 6)
 	{
 		printf("Error: invalid number of arguments\n");
-		return (1);
+		return (ERROR);
 	}
-	return (0);
+	return (SUCCESS);
 }
 
-int	inputcheck(char **argv)
+/// @brief 			checks if the arguments are valid
+/// @param argv		arguments to validate
+/// @return			SUCCESS if arguments are valid, ERROR otherwise
+int	valid_argv(char **argv)
 {
 	int		i;
 	char	*t;
@@ -43,14 +46,14 @@ int	inputcheck(char **argv)
 			else
 			{
 				printf("Error: invalid arguments\n");
-				return (1);
+				return (ERROR);
 			}
 		}
 	}
-	return (0);
+	return (SUCCESS);
 }
 
-int	datacheck(t_data *d)
+int	valid_args(t_data *d)
 {
 	int	r;
 
@@ -87,7 +90,7 @@ t_data	*get_data(char **argv)
 		*data->cap = ft_long_atoi(argv[5]);
 		data->end = 1 - data->qty;
 	}
-	if (datacheck(data) == 1 && datafree(data) == 0)
+	if (valid_args(data) == 1 && datafree(data) == 0)
 		return (NULL);
 	data->t_die = data->t_die * 1000;
 	data->t_eat = data->t_eat * 1000;
