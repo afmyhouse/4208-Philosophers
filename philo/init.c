@@ -6,13 +6,13 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:44:02 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/09 15:20:15 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/11 14:40:21 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-t_philo	*philo_new(int id, t_data *data)
+t_philo	*philo_new(int id, t_info *info)
 {
 	t_philo	*p;
 	t_fork	f[2];
@@ -23,8 +23,8 @@ t_philo	*philo_new(int id, t_data *data)
 	ft_bzero(p, sizeof(t_philo));
 	ft_bzero(f, sizeof(t_fork) * 2);
 	p->id = id;
-	p->d = data;
-	if (data->qty > 2 && id % 2 == 0)
+	p->d = info;
+	if (info->phqty > 2 && id % 2 == 0)
 		p->go = 1;
 	return (p);
 }
@@ -47,7 +47,7 @@ void	philo_add(t_philo **p, t_philo *new)
 	(*p)->prev = new;
 }
 
-t_philo	*philo_init(t_data *data)
+t_philo	*philo_init(t_info *info)
 {
 	int		i;
 	t_philo	*p;
@@ -56,13 +56,13 @@ t_philo	*philo_init(t_data *data)
 	p = NULL;
 	new = NULL;
 	i = 0;
-	while (++i <= data->qty)
+	while (++i <= info->phqty)
 	{
-		new = philo_new(i, data);
+		new = philo_new(i, info);
 		if (!new)
 		{
-			philofree(p, NULL);
-			datafree(data);
+			philo_free(p, NULL);
+			free_data(info);
 			return (NULL);
 		}
 		philo_add(&p, new);
@@ -80,7 +80,7 @@ int	set_threads(t_philo *p)
 		if (pthread_create(&tmp->thread, NULL, philo_routine, (void *)tmp) != 0)
 		{
 			printf("Error: pthread_create\n");
-			return (1);
+			return (ERROR);
 		}
 		tmp = tmp->next;
 	}

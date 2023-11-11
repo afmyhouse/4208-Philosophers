@@ -6,96 +6,55 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:47:28 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/10 12:44:49 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/11 14:39:10 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	valid_argc(int argc)
+void	msec2usec(void *t)
 {
-	if (argc < 5 || argc > 6)
+	*(long long *)t = *(long long *)t * 1000;
+}
+
+int	invalid_info(t_info *d)
+{
+	if (d->phqty < 1 || d->phqty > INTMAX
+		|| d->ttdie < 0 || d->ttdie > INTMAX || d->ttdie < INTMIN
+		|| d->tteat < 0 || d->tteat > INTMAX || d->tteat < INTMIN
+		|| d->ttslp < 0 || d->ttslp > INTMAX || d->ttslp < INTMIN
+		|| (d->cap != NULL
+			&& (*d->cap < 1 || *d->cap > INTMAX || *d->cap < INTMIN)))
 	{
-		printf("Error: invalid number of arguments\n");
+		printf("Error: invalid arguments\n");
 		return (ERROR);
 	}
 	return (SUCCESS);
 }
 
-/// @brief 			checks if the arguments are valid
-/// @param argv		arguments to validate
-/// @return			SUCCESS if arguments are valid, ERROR otherwise
-int	valid_argv(char **argv)
+t_info	*philo_info(char **argv)
 {
-	int		i;
-	char	*t;
-	int		sign;
+	t_info	*info;
 
-	i = 0;
-	while (argv[++i])
+	info = malloc(sizeof(t_info));
+	ft_bzero(info, sizeof(t_info));
+	info->phqty = ft_long_atoi(argv[PHQTY]);
+	info->ttdie = ft_long_atoi(argv[TTDIE]);
+	info->tteat = ft_long_atoi(argv[TTEAT]);
+	info->ttslp = ft_long_atoi(argv[TTSLP]);
+	info->end = 0;
+	if (argv[MEALQTY] != NULL)
 	{
-		t = argv[i];
-		sign = 1;
-		while (*t)
-		{
-			if (((*t == '-' || *t == '+') && sign) || (*t >= '0' && *t <= '9'))
-			{
-				sign = 0;
-				t++;
-			}
-			else
-			{
-				printf("Error: invalid arguments\n");
-				return (ERROR);
-			}
-		}
+		info->cap = malloc(sizeof(long long));
+		*info->cap = ft_long_atoi(argv[MEALQTY]);
+		info->end = 1 - info->phqty;
 	}
-	return (SUCCESS);
-}
-
-int	valid_args(t_data *d)
-{
-	int	r;
-
-	r = 0;
-	if (d->qty < 1 || d->qty > INTMAX)// || d->qty < INTMIN)
-		r = 1;
-	if (d->t_die < 0 || d->t_die > INTMAX || d->t_die < INTMIN)
-		r = 1;
-	if (d->t_eat < 0 || d->t_eat > INTMAX || d->t_eat < INTMIN)
-		r = 1;
-	if (d->t_sleep < 0 || d->t_sleep > INTMAX || d->t_sleep < INTMIN)
-		r = 1;
-	if (d->cap != NULL && (*d->cap < 1 || *d->cap > INTMAX || *d->cap < INTMIN))
-		r = 1;
-	if (r == 1)
-		printf("Error: invalid arguments\n");
-	return (r);
-}
-
-t_data	*get_data(char **argv)
-{
-	t_data	*data;
-
-	data = malloc(sizeof(t_data));
-	ft_bzero(data, sizeof(t_data));
-	data->qty = ft_long_atoi(argv[1]);
-	data->t_die = ft_long_atoi(argv[2]);
-	data->t_eat = ft_long_atoi(argv[3]);
-	data->t_sleep = ft_long_atoi(argv[4]);
-	data->end = 0;
-	if (argv[5] != NULL)
-	{
-		data->cap = malloc(sizeof(long long));
-		*data->cap = ft_long_atoi(argv[5]);
-		data->end = 1 - data->qty;
-	}
-	if (valid_args(data) == 1 && datafree(data) == 0)
+	if (invalid_info(info) == ERROR && free_data(info) == SUCCESS)
 		return (NULL);
-	data->t_die = data->t_die * 1000;
-	data->t_eat = data->t_eat * 1000;
-	data->t_sleep = data->t_sleep * 1000;
-	if ((data->t_die - data->t_eat - data->t_sleep) / 2 > 0)
-		data->t_think = (data->t_die - data->t_eat - data->t_sleep) / 2;
-	return (data);
+	msec2usec(&info->ttdie);
+	msec2usec(&info->tteat);
+	msec2usec(&info->ttslp);
+	if ((info->ttdie - info->tteat - info->ttslp) / 2 > 0)
+		info->ttthk = (info->ttdie - info->tteat - info->ttslp) / 2;
+	return (info);
 }

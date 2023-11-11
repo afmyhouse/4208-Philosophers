@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:51:32 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/09 16:35:19 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/11 14:17:27 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	set_offset(t_philo *p)
 		printf("Error: gettimeofday\n");
 		return (1);
 	}
-	i = p->d->qty;
+	i = p->d->phqty;
 	tmp = p;
 	while (i--)
 	{
@@ -38,7 +38,7 @@ int	deathcheck(t_philo *p)
 	{
 		if (set_time(p) == 0)
 		{
-			if (utime(p->t) - utime(p->t0) > p->d->t_die)
+			if (utime(p->t) - utime(p->t0) > p->d->ttdie)
 			{
 				printstate(p, 4, p->t);
 				endr(p);

@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:43:54 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/09 16:47:12 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/11 14:02:41 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int	deathcheck(t_philo *p, struct timeval *t)
 	{
 		if (set_time(t) == 0)
 		{
-			if (utime(*t) - utime(p->t0) > p->d->t_die)
+			if (utime(*t) - utime(p->t0) > p->d->ttdie)
 			{
 				printstate(p, 4, *t);
 				endset(p, DEAD);

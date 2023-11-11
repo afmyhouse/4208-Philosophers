@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:47:55 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/09 15:20:15 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/11 14:17:27 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	set_forks(t_philo *p, t_fork *f)
 		tmp->f[tmp->id % 2] = &f[tmp->id];
 		tmp = tmp->next;
 	}
-	if (p->d->qty == 2)
+	if (p->d->phqty == 2)
 	{
 		tmp->f[0] = &f[0];
 		tmp->f[1] = &f[1];

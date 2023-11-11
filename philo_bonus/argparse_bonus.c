@@ -1,7 +1,7 @@
 
 #include "philo_bonus.h"
 
-int	valid_argc(int argc)
+int	invalid_argc(int argc)
 {
 	if (argc < 5 || argc > 6)
 	{
@@ -11,7 +11,7 @@ int	valid_argc(int argc)
 	return (0);
 }
 
-int	valid_argv(char **argv)
+int	invalid_argv(char **argv)
 {
 	int		i;
 	char	*t;
@@ -39,18 +39,18 @@ int	valid_argv(char **argv)
 	return (0);
 }
 
-int	valid_args(t_data *d)
+int	invalid_info(t_info *d)
 {
 	int	r;
 
 	r = 0;
-	if (d->qty < 1 || d->qty > INTMAX)// || d->n_philo < INTMIN)
+	if (d->phqty < 1 || d->phqty > INTMAX)// || d->n_philo < INTMIN)
 		r = 1;
-	if (d->t_die < 0 || d->t_die > INTMAX || d->t_die < INTMIN)
+	if (d->ttdie < 0 || d->ttdie > INTMAX || d->ttdie < INTMIN)
 		r = 1;
-	if (d->t_eat < 0 || d->t_eat > INTMAX || d->t_eat < INTMIN)
+	if (d->tteat < 0 || d->tteat > INTMAX || d->tteat < INTMIN)
 		r = 1;
-	if (d->t_sleep < 0 || d->t_sleep > INTMAX || d->t_sleep < INTMIN)
+	if (d->ttslp < 0 || d->ttslp > INTMAX || d->ttslp < INTMIN)
 		r = 1;
 	if (d->cap != NULL && (*d->cap < 1 || *d->cap > INTMAX || *d->cap < INTMIN))
 		r = 1;
@@ -59,27 +59,27 @@ int	valid_args(t_data *d)
 	return (r);
 }
 
-t_data	*get_data(char **argv)
+t_info	*philo_info(char **argv)
 {
-	t_data	*d;
+	t_info	*d;
 
-	d = malloc(sizeof(t_data));
-	ft_bzero(d, sizeof(t_data));
-	d->qty = ft_long_atoi(argv[1]);
-	d->t_die = ft_long_atoi(argv[2]);
-	d->t_eat = ft_long_atoi(argv[3]);
-	d->t_sleep = ft_long_atoi(argv[4]);
+	d = malloc(sizeof(t_info));
+	ft_bzero(d, sizeof(t_info));
+	d->phqty = ft_long_atoi(argv[1]);
+	d->ttdie = ft_long_atoi(argv[2]);
+	d->tteat = ft_long_atoi(argv[3]);
+	d->ttslp = ft_long_atoi(argv[4]);
 	if (argv[5] != NULL)
 	{
 		d->cap = malloc(sizeof(long long));
 		*d->cap = ft_long_atoi(argv[5]);
 	}
-	if (valid_args(d) == 1 && datafree(d) == 0)
+	if (invalid_info(d) == 1 && free_data(d) == 0)
 		return (NULL);
-	d->t_die = d->t_die * 1000;
-	d->t_eat = d->t_eat * 1000;
-	d->t_sleep = d->t_sleep * 1000;
-	if (d->qty % 2 && (d->t_die - d->t_eat - d->t_sleep) / 2 > 0)
-		d->t_think = (d->t_die - d->t_eat - d->t_sleep) / 2;
+	d->ttdie = d->ttdie * 1000;
+	d->tteat = d->tteat * 1000;
+	d->ttslp = d->ttslp * 1000;
+	if (d->phqty % 2 && (d->ttdie - d->tteat - d->ttslp) / 2 > 0)
+		d->ttthk = (d->ttdie - d->tteat - d->ttslp) / 2;
 	return (d);
 }

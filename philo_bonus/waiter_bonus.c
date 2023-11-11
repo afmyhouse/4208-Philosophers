@@ -15,7 +15,7 @@ void	endr(t_philo *p)
 {
 	int	i;
 
-	i = p->d->qty;
+	i = p->d->phqty;
 	while (i--)
 	{
 		if (sem_post(p->d->sem_end) != 0)
@@ -32,7 +32,7 @@ int	philo_waiter(t_philo *p)
 	t_philo	*tmp;
 
 	tmp = p;
-	i = p->d->qty;
+	i = p->d->phqty;
 	while (i--)
 		sem_wait(p->d->sem_end);
 	while (tmp->next != NULL && tmp->next != p)

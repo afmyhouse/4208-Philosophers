@@ -6,37 +6,91 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:48:13 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/10 12:42:41 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/11 14:39:10 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	main(int argc, char **argv)
+/// @brief 			checks if the number of arguments is valid
+/// @param argc		Number of arguments
+/// @return			SUCCESS if number of arguments is valid, ERROR otherwise
+int	invalid_argc(int argc)
+{
+	if (argc < 5 || argc > 6)
+	{
+		printf("Error: invalid number of arguments\n");
+		return (ERROR);
+	}
+	return (SUCCESS);
+}
+
+/// @brief 			checks if the arguments are valid
+/// @param argv		arguments to validate
+/// @return			SUCCESS if arguments are valid, ERROR otherwise
+int	invalid_argv(char **argv)
+{
+	int		i;
+	char	*t;
+	int		sign;
+
+	i = 0;
+	while (argv[++i])
+	{
+		t = argv[i];
+		sign = 1;
+		while (*t)
+		{
+			if (((*t == '-' || *t == '+') && sign) || (*t >= '0' && *t <= '9'))
+			{
+				sign = 0;
+				t++;
+			}
+			else
+			{
+				printf("Error: invalid arguments\n");
+				return (ERROR);
+			}
+		}
+	}
+	return (SUCCESS);
+}
+
+static int	init_all(char **argv)
 {
 	t_philo	*p;
 	t_fork	*f;
-	t_data	*d;
+	t_info	*info;
 
-	if (valid_argc(argc) == 1 || valid_argv(argv) == ERROR)
+	info = philo_info(argv);
+	if (!info)
 		return (ERROR);
-	d = get_data(argv);
-	if (!d)
+	if (init_aux_mtx(info) == ERROR && free_data(info) == SUCCESS)
 		return (ERROR);
-	if (set_aux_mutexes(d) == 1 && datafree(d) == 0)
-		return (ERROR);
-	p = philo_init(d);
+	p = philo_init(info);
 	if (!p)
 		return (ERROR);
 	f = forkinit(p);
 	if (!f)
 		return (ERROR);
 	set_forks(p, f);
-	if (set_threads(p) == 1 || join_threads(p) == 1 || destroyer(d, f) == 1)
+	if (set_threads(p) == 1 || join_threads(p) == 1 || destroyer(info, f) == 1)
 	{
-		philofree(p, f);
-		return (1);
+		philo_free(p, f);
+		return (ERROR);
 	}
-	philofree(p, f);
-	return (0);
+	philo_free(p, f);
+	return (SUCCESS);
+}
+
+/// @brief 			Main checks arguments are valid and initializes the program
+/// @param argc		Number of arguments
+/// @param argv		Arguments to validate
+/// @return			SUCCESS if program ran successfully, ERROR otherwise
+int	main(int argc, char **argv)
+{
+	if (invalid_argc(argc) || invalid_argv(argv))
+		return (ERROR);
+	init_all(argv);
+	return (SUCCESS);
 }

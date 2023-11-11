@@ -3,12 +3,12 @@
 
 int	main(int argc, char **argv)
 {
-	t_data	*d;
+	t_info	*d;
 	t_philo	*p;
 
-	if (valid_argc(argc) == 1 || valid_argv(argv) == 1)
+	if (invalid_argc(argc) == 1 || invalid_argv(argv) == 1)
 		return (1);
-	d = get_data(argv);
+	d = philo_info(argv);
 	if (!d)
 		return (1);
 	p = philo_init(d);
