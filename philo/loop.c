@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   routine.c                                          :+:      :+:    :+:   */
+/*   loop.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:48:04 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/11 14:03:08 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/12 19:08:10 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ int	grab_fork(t_philo *p, int fork_id)
 	int				status;
 
 	status = 0;
-	while (forkcheck(p, fork_id, 0) != 0)
+	while (fork_check(p, fork_id, 0) != 0)
 		status = deathcheck(p, &t);
 	if (endcheck(p) == -1)
 		return (status);
 	if (pthread_mutex_lock(p->f[fork_id]->mtx) == 0)
 	{
-		forkupdate(p, fork_id, p->id);
+		fork_upd(p, fork_id, p->id);
 		if (deathcheck(p, &t) == 1 || printstate(p, FORK, t) == 1)
 		{
 			if (pthread_mutex_unlock(p->f[fork_id]->mtx) != 0)
@@ -52,11 +52,11 @@ int	eat(t_philo *p)
 	{
 		p->t0 = t;
 		printstate(p, EAT, t);
-		usleep(ft_min(p->d->tteat, p->d->ttdie));
-		if (p->d->cap != NULL && ++p->meals == *p->d->cap)
+		usleep(ft_min(p->info->tteat, p->info->ttdie));
+		if (p->info->mealqty != NULL && ++p->meals == *p->info->mealqty)
 			endset(p, EAT);
 	}
-	if (drop_fork(p, 0) == 1 || drop_fork(p, 1) == 1)
+	if (fork_drop(p, 0) == 1 || fork_drop(p, 1) == 1)
 		return (1);
 	return (status);
 }
@@ -73,10 +73,10 @@ int	nap(t_philo *p)
 	{
 		if (printstate(p, SLEEP, t) == 1)
 			return (1);
-		if (p->d->ttslp + p->d->tteat < p->d->ttdie)
-			usleep(p->d->ttslp);
+		if (p->info->ttslp + p->info->tteat < p->info->ttdie)
+			usleep(p->info->ttslp);
 		else
-			usleep(p->d->ttdie - p->d->tteat);
+			usleep(p->info->ttdie - p->info->tteat);
 	}
 	return (deathcheck(p, &t));
 }
@@ -91,7 +91,7 @@ int	think(t_philo *p)
 		return (status);
 	if (status == 1 || printstate(p, THINK, t) == 1)
 		return (1);
-	usleep(p->d->ttthk);
+	usleep(p->info->ttthk);
 	return (0);
 }
 
@@ -106,11 +106,11 @@ void	*philo_routine(void *philo)
 	{
 		if (deathcheck(philo, &t) == 1 || endcheck(p) == -1)
 		{
-			drop_fork(p, 0);
-			drop_fork(p, 1);
+			fork_drop(p, 0);
+			fork_drop(p, 1);
 			return (NULL);
 		}
-		if (p->f[1] == NULL || (forkcheck(p, 0, 0) == 0 && p->go == 1))
+		if (p->f[1] == NULL || (fork_check(p, 0, 0) == 0 && p->go == 1))
 			continue ;
 		p->go = 0;
 		if (grab_fork(philo, 0) == 0 && grab_fork(philo, 1) == 0)

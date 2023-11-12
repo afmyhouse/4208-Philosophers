@@ -10,7 +10,7 @@ t_philo	*philo_new(int id, t_info *data)
 		return (NULL);
 	ft_bzero(p, sizeof(t_philo));
 	p->id = id;
-	p->d = data;
+	p->info = data;
 	return (p);
 }
 
@@ -62,7 +62,7 @@ int	set_processes(t_philo *p)
 	pthread_t	thread;
 
 	tmp = p;
-	i = p->d->phqty;
+	i = p->info->phqty;
 	set_offset(p);
 	while (i--)
 	{

@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   waiter.c                                           :+:      :+:    :+:   */
+/*   forks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:47:55 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/11 14:17:27 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/12 19:45:29 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	set_forks(t_philo *p, t_fork *f)
+void	fork_set(t_philo *p, t_fork *f)
 {
 	t_philo	*tmp;
 
@@ -23,7 +23,7 @@ void	set_forks(t_philo *p, t_fork *f)
 		tmp->f[tmp->id % 2] = &f[tmp->id];
 		tmp = tmp->next;
 	}
-	if (p->d->phqty == 2)
+	if (p->info->phqty == 2)
 	{
 		tmp->f[0] = &f[0];
 		tmp->f[1] = &f[1];
@@ -34,82 +34,62 @@ void	set_forks(t_philo *p, t_fork *f)
 		tmp->f[1] = &f[0];
 }
 
-int	forkcheck(t_philo *p, int fork_id, int philo_id)
+int	fork_check(t_philo *p, int fork_id, int philo_id)
 {
 	int	status;
 
 	status = 0;
-	if (pthread_mutex_lock(p->d->mtx_fcheck.mtx) == 0)
+	if (pthread_mutex_lock(p->info->mtx_fcheck.mtx) == 0)
 	{
 		if (p->f[fork_id]->philo_id != philo_id)
 			status = -1;
-		if (pthread_mutex_unlock(p->d->mtx_fcheck.mtx) != 0)
+		if (pthread_mutex_unlock(p->info->mtx_fcheck.mtx) != 0)
 		{
 			printf("Error: pthread_mutex_unlock (mtx_fcheck)\n");
-			return (1);
+			return (ERROR);
 		}
 	}
 	else
 	{
 		printf("Error: pthread_mutex_lock (mtx_fcheck)\n");
-		return (1);
+		return (ERROR);
 	}
 	return (status);
 }
 
-int	forkupdate(t_philo *p, int fork_id, int philo_id)
+int	fork_upd(t_philo *p, int fork_id, int philo_id)
 {
-	if (pthread_mutex_lock(p->d->mtx_fcheck.mtx) == 0)
+	if (pthread_mutex_lock(p->info->mtx_fcheck.mtx) == 0)
 	{
 		p->f[fork_id]->philo_id = philo_id;
-		if (pthread_mutex_unlock(p->d->mtx_fcheck.mtx) != 0)
+		if (pthread_mutex_unlock(p->info->mtx_fcheck.mtx) != 0)
 		{
 			printf("Error: pthread_mutex_unlock (mtx_fcheck)\n");
-			return (1);
+			return (ERROR);
 		}
 	}
 	else
 	{
 		printf("Error: pthread_mutex_lock (mtx_fcheck)\n");
-		return (1);
+		return (ERROR);
 	}
-	return (0);
+	return (SUCCESS);
 }
 
-int	drop_fork(t_philo *p, int fork_id)
+int	fork_drop(t_philo *p, int fork_id)
 {
 	if (p->f[fork_id] == NULL)
-		return (0);
-	if (forkcheck(p, fork_id, p->id) == 0)
+		return (SUCCESS);
+	if (fork_check(p, fork_id, p->id) == 0)
 	{
-		forkupdate(p, fork_id, 0);
+		fork_upd(p, fork_id, 0);
 		if (pthread_mutex_unlock(p->f[fork_id]->mtx) != 0)
 		{
 			printf("Error: pthread_mutex_unlock (fork)\n");
-			return (1);
+			return (ERROR);
 		}
 	}
-	return (0);
+	return (SUCCESS);
 }
 
-int	join_threads(t_philo *p)
-{
-	t_philo	*tmp;
 
-	tmp = p;
-	while (tmp->next != NULL && tmp->next != p)
-	{
-		if (pthread_join(tmp->thread, NULL) != 0)
-		{
-			printf("Error: pthread_join\n");
-			return (1);
-		}
-		tmp = tmp->next;
-	}
-	if (pthread_join(tmp->thread, NULL) != 0)
-	{
-		printf("Error: pthread_join\n");
-		return (1);
-	}
-	return (0);
-}

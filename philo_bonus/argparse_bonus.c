@@ -59,7 +59,7 @@ int	invalid_info(t_info *d)
 	return (r);
 }
 
-t_info	*philo_info(char **argv)
+t_info	*info_init(char **argv)
 {
 	t_info	*d;
 
