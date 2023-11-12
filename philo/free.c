@@ -6,13 +6,13 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:43:58 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/09 15:20:15 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/11 14:39:10 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	datafree(t_data *d)
+int	free_data(t_info *d)
 {
 	if (d->cap != NULL)
 		free(d->cap);
@@ -27,7 +27,7 @@ int	datafree(t_data *d)
 	if (d->mtx_end.mtx != NULL)
 		free(d->mtx_end.mtx);
 	free(d);
-	return (0);
+	return (SUCCESS);
 }
 
 void	forkfree(t_fork *f, int n_philo)
@@ -46,15 +46,15 @@ void	forkfree(t_fork *f, int n_philo)
 	}
 }
 
-void	philofree(t_philo *p, t_fork *f)
+void	philo_free(t_philo *p, t_fork *f)
 {
 	t_philo	*tmp;
 	t_philo	*next;
 
 	tmp = p;
 	next = tmp;
-	forkfree(f, p->d->qty);
-	datafree(p->d);
+	forkfree(f, p->d->phqty);
+	free_data(p->d);
 	if (p != NULL)
 	{
 		while (tmp->next != NULL && tmp->next != p)

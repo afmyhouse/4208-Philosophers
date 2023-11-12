@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:47:42 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/10 12:44:49 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/11 14:41:06 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,11 @@
 # define DEAD 4
 # define INTMAX	2147483647
 # define INTMIN	-2147483648
+# define PHQTY 1
+# define TTDIE 2
+# define TTEAT 3
+# define TTSLP 4
+# define MEALQTY 5
 
 typedef struct s_fork
 {
@@ -34,13 +39,13 @@ typedef struct s_fork
 	pthread_mutex_t	*mtx;
 }	t_fork;
 
-typedef struct s_data
+typedef struct s_info
 {
-	int				qty;
-	long long		t_die;
-	long long		t_eat;
-	long long		t_sleep;
-	long long		t_think;
+	int				phqty;
+	long long		ttdie;
+	long long		tteat;
+	long long		ttslp;
+	long long		ttthk;
 	long long		*cap;
 	struct timeval	offset;
 	long long		end;
@@ -49,14 +54,14 @@ typedef struct s_data
 	t_fork			mtx_death;
 	t_fork			mtx_fcheck;
 	t_fork			mtx_end;
-}	t_data;
+}	t_info;
 
 typedef struct s_philo
 {
 	int					id;
 	pthread_t			thread;
 	t_fork				*f[2];
-	t_data				*d;
+	t_info				*d;
 	struct timeval		t0;
 	int					meals;
 	int					go;
@@ -64,25 +69,25 @@ typedef struct s_philo
 	struct s_philo		*next;
 }	t_philo;
 
-int			valid_argc(int argc);
-int			valid_argv(char **argv);
-int			valid_args(t_data *d);
-t_data		*get_data(char **argv);
+int			invalid_argc(int argc);
+int			invalid_argv(char **argv);
+int			invalid_info(t_info *d);
+t_info		*philo_info(char **argv);
 
 int			set_time(struct timeval *t);
 long long	utimestamp(struct timeval t0);
 long long	utime(struct timeval t);
 long long	deltatime(struct timeval t0, struct timeval t1);
 
-t_philo		*philo_new(int id, t_data *data);
+t_philo		*philo_new(int id, t_info *data);
 void		philo_add(t_philo **p, t_philo *new);
-t_philo		*philo_init(t_data *data);
+t_philo		*philo_init(t_info *data);
 int			set_threads(t_philo *p);
 
-int			set_aux_mutexes(t_data *d);
+int			init_aux_mtx(t_info *d);
 t_fork		*forkinit(t_philo *p);
 int			mtxdestroy(pthread_mutex_t *mtx);
-int			destroyer(t_data *d, t_fork *f);
+int			destroyer(t_info *d, t_fork *f);
 
 int			grab_fork(t_philo *p, int fork_id);
 int			eat(t_philo *p);
@@ -102,9 +107,9 @@ int			forkupdate(t_philo *p, int fork_id, int philo_id);
 int			drop_fork(t_philo *p, int fork_id);
 int			join_threads(t_philo *p);
 
-int			datafree(t_data *d);
+int			free_data(t_info *d);
 void		forkfree(t_fork *f, int n_philo);
-void		philofree(t_philo *p, t_fork *f);
+void		philo_free(t_philo *p, t_fork *f);
 
 size_t		ft_strlen(const char *s);
 long long	ft_long_atoi(const char *nptr);

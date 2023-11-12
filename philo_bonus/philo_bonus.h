@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:53:22 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/10 12:44:49 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/11 14:39:10 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@
 # define INTMAX	2147483647
 # define INTMIN	-2147483648
 
-typedef struct s_data
+typedef struct s_info
 {
-	int				qty;
-	long long		t_die;
-	long long		t_eat;
-	long long		t_sleep;
-	long long		t_think;
+	int				phqty;
+	long long		ttdie;
+	long long		tteat;
+	long long		ttslp;
+	long long		ttthk;
 	long long		*cap;
 	struct timeval	offset;
 	sem_t			*sem_forks;
@@ -47,13 +47,13 @@ typedef struct s_data
 	sem_t			*sem_go;
 	sem_t			*sem_end;
 	sem_t			*sem_time;
-}	t_data;
+}	t_info;
 
 typedef struct s_philo
 {
 	int					id;
 	pid_t				pid;
-	t_data				*d;
+	t_info				*d;
 	struct timeval		t0;
 	struct timeval		t;
 	int					meals;
@@ -61,21 +61,21 @@ typedef struct s_philo
 	struct s_philo		*next;
 }	t_philo;
 
-int				valid_argc(int argc);
-int				valid_argv(char **argv);
-int				valid_args(t_data *d);
-t_data			*get_data(char **argv);
+int				invalid_argc(int argc);
+int				invalid_argv(char **argv);
+int				invalid_info(t_info *d);
+t_info			*philo_info(char **argv);
 
 int				set_time(t_philo *p);
 struct timeval	now(t_philo *p);
 long long		utime(struct timeval t);
 long long		deltatime(struct timeval t0, struct timeval t1);
 
-t_philo			*philo_new(int id, t_data *data);
+t_philo			*philo_new(int id, t_info *data);
 void			philo_add(t_philo **p, t_philo *new);
-t_philo			*philo_init(t_data *data);
+t_philo			*philo_init(t_info *data);
 int				set_processes(t_philo *p);
-int				seminit(t_data *data);
+int				seminit(t_info *data);
 
 int				grab_fork(t_philo *p);
 int				eat(t_philo *p);
@@ -93,8 +93,8 @@ void			endr(t_philo *p);
 int				philo_waiter(t_philo *p);
 
 int				semunlinker(void);
-int				semdestroyer(t_data *d);
-int				datafree(t_data *d);
+int				semdestroyer(t_info *d);
+int				free_data(t_info *d);
 void			philofree(t_philo *p);
 
 size_t			ft_strlen(const char *s);

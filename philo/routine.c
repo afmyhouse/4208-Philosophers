@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:48:04 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/09 16:38:01 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/11 14:03:08 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	eat(t_philo *p)
 	{
 		p->t0 = t;
 		printstate(p, EAT, t);
-		usleep(ft_min(p->d->t_eat, p->d->t_die));
+		usleep(ft_min(p->d->tteat, p->d->ttdie));
 		if (p->d->cap != NULL && ++p->meals == *p->d->cap)
 			endset(p, EAT);
 	}
@@ -73,10 +73,10 @@ int	nap(t_philo *p)
 	{
 		if (printstate(p, SLEEP, t) == 1)
 			return (1);
-		if (p->d->t_sleep + p->d->t_eat < p->d->t_die)
-			usleep(p->d->t_sleep);
+		if (p->d->ttslp + p->d->tteat < p->d->ttdie)
+			usleep(p->d->ttslp);
 		else
-			usleep(p->d->t_die - p->d->t_eat);
+			usleep(p->d->ttdie - p->d->tteat);
 	}
 	return (deathcheck(p, &t));
 }
@@ -91,7 +91,7 @@ int	think(t_philo *p)
 		return (status);
 	if (status == 1 || printstate(p, THINK, t) == 1)
 		return (1);
-	usleep(p->d->t_think);
+	usleep(p->d->ttthk);
 	return (0);
 }
 

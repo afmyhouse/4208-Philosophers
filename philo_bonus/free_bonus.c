@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_free_bonus.c                                 :+:      :+:    :+:   */
+/*   free_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:53:18 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/07 13:53:19 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/11 14:39:10 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-int	datafree(t_data *d)
+int	free_data(t_info *d)
 {
 	if (d->cap != NULL)
 		free(d->cap);
@@ -27,7 +27,7 @@ void	philofree(t_philo *p)
 
 	tmp = p;
 	next = tmp;
-	datafree(p->d);
+	free_data(p->d);
 	if (p != NULL)
 	{
 		while (tmp->next != NULL && tmp->next != p)
@@ -60,7 +60,7 @@ int	semunlinker(void)
 	return (0);
 }
 
-int	semdestroyer(t_data *d)
+int	semdestroyer(t_info *d)
 {
 	if (sem_close(d->sem_forks) != 0 || sem_close(d->sem_print) != 0)
 	{

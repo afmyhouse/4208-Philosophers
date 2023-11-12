@@ -1,7 +1,7 @@
 
 #include "philo_bonus.h"
 
-t_philo	*philo_new(int id, t_data *data)
+t_philo	*philo_new(int id, t_info *data)
 {
 	t_philo	*p;
 
@@ -32,7 +32,7 @@ void	philo_add(t_philo **p, t_philo *new)
 	(*p)->prev = new;
 }
 
-t_philo	*philo_init(t_data *data)
+t_philo	*philo_init(t_info *data)
 {
 	int		i;
 	t_philo	*p;
@@ -41,13 +41,13 @@ t_philo	*philo_init(t_data *data)
 	p = NULL;
 	new = NULL;
 	i = 0;
-	while (++i <= data->qty)
+	while (++i <= data->phqty)
 	{
 		new = philo_new(i, data);
 		if (!new)
 		{
 			philofree(p);
-			datafree(data);
+			free_data(data);
 			return (NULL);
 		}
 		philo_add(&p, new);
@@ -62,7 +62,7 @@ int	set_processes(t_philo *p)
 	pthread_t	thread;
 
 	tmp = p;
-	i = p->d->qty;
+	i = p->d->phqty;
 	set_offset(p);
 	while (i--)
 	{
@@ -83,10 +83,10 @@ int	set_processes(t_philo *p)
 	return (0);
 }
 
-int	seminit(t_data *data)
+int	seminit(t_info *data)
 {
 	sem_unlink("forks");
-	data->sem_forks = sem_open("forks", O_CREAT, 0644, data->qty);
+	data->sem_forks = sem_open("forks", O_CREAT, 0644, data->phqty);
 	if (data->sem_forks == SEM_FAILED)
 		return (1);
 	sem_unlink("print");
@@ -98,7 +98,7 @@ int	seminit(t_data *data)
 	if (data->sem_death == SEM_FAILED)
 		return (1);
 	sem_unlink("go");
-	data->sem_go = sem_open("go", O_CREAT, 0644, data->qty / 2);
+	data->sem_go = sem_open("go", O_CREAT, 0644, data->phqty / 2);
 	if (data->sem_go == SEM_FAILED)
 		return (1);
 	sem_unlink("end");

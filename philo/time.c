@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_time.c                                       :+:      :+:    :+:   */
+/*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:48:01 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/07 13:48:02 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/10 19:37:06 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ int	set_time(struct timeval *t)
 	if (gettimeofday(t, NULL) == -1)
 	{
 		printf("Error: gettimeofday\n");
-		return (1);
+		return (ERROR);
 	}
-	return (0);
+	return (SUCCESS);
 }
 
 long long	utimestamp(struct timeval t0)
