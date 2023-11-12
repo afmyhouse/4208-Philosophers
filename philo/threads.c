@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 17:48:08 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/12 18:37:21 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/12 21:45:11 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ int	set_threads(t_philo *p)
 	tmp = p;
 	while (tmp->next != NULL && tmp->next != p)
 	{
-		if (pthread_create(&tmp->thread, NULL, philo_routine, (void *)tmp) != 0)
+		if (pthread_create(&tmp->thread, NULL, philo_loop, (void *)tmp) != 0)
 		{
 			printf("Error: pthread_create\n");
 			return (ERROR);
 		}
 		tmp = tmp->next;
 	}
-	if (pthread_create(&tmp->thread, NULL, philo_routine, (void *)tmp) != 0)
+	if (pthread_create(&tmp->thread, NULL, philo_loop, (void *)tmp) != 0)
 	{
 		printf("Error: pthread_create\n");
 		return (ERROR);

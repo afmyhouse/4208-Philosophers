@@ -6,96 +6,68 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:48:04 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/12 19:08:10 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/12 22:28:50 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	grab_fork(t_philo *p, int fork_id)
+int	p_eat(t_philo *p)
 {
 	struct timeval	t;
 	int				status;
 
-	status = 0;
-	while (fork_check(p, fork_id, 0) != 0)
-		status = deathcheck(p, &t);
-	if (endcheck(p) == -1)
-		return (status);
-	if (pthread_mutex_lock(p->f[fork_id]->mtx) == 0)
-	{
-		fork_upd(p, fork_id, p->id);
-		if (deathcheck(p, &t) == 1 || printstate(p, FORK, t) == 1)
-		{
-			if (pthread_mutex_unlock(p->f[fork_id]->mtx) != 0)
-				printf("Error: pthread_mutex_unlock (fork)\n");
-			return (1);
-		}
-	}
-	else
-	{
-		printf("Error: pthread_mutex_lock (fork)\n");
-		return (1);
-	}
-	return (status);
-}
-
-int	eat(t_philo *p)
-{
-	struct timeval	t;
-	int				status;
-
-	status = deathcheck(p, &t);
-	if (endcheck(p) == -1)
+	status = check_died(p, &t);
+	if (check_finished(p) == -1)
 		return (status);
 	if (status == 0)
 	{
 		p->t0 = t;
-		printstate(p, EAT, t);
+		status_print(p, EAT, t);
 		usleep(ft_min(p->info->tteat, p->info->ttdie));
 		if (p->info->mealqty != NULL && ++p->meals == *p->info->mealqty)
-			endset(p, EAT);
+			set_finished(p, EAT);
 	}
 	if (fork_drop(p, 0) == 1 || fork_drop(p, 1) == 1)
 		return (1);
 	return (status);
 }
 
-int	nap(t_philo *p)
+int	p_sleep(t_philo *p)
 {
 	struct timeval	t;
 	int				status;
 
-	status = deathcheck(p, &t);
-	if (endcheck(p) == -1)
+	status = check_died(p, &t);
+	if (check_finished(p) == -1)
 		return (status);
 	if (status == 0)
 	{
-		if (printstate(p, SLEEP, t) == 1)
+		if (status_print(p, SLEEP, t) == 1)
 			return (1);
 		if (p->info->ttslp + p->info->tteat < p->info->ttdie)
 			usleep(p->info->ttslp);
 		else
 			usleep(p->info->ttdie - p->info->tteat);
 	}
-	return (deathcheck(p, &t));
+	return (check_died(p, &t));
 }
 
-int	think(t_philo *p)
+int	p_think(t_philo *p)
 {
 	struct timeval	t;
 	int				status;
 
-	status = deathcheck(p, &t);
-	if (endcheck(p) == -1)
+	status = check_died(p, &t);
+	if (check_finished(p) == -1)
 		return (status);
-	if (status == 1 || printstate(p, THINK, t) == 1)
+	if (status == 1 || status_print(p, THINK, t) == 1)
 		return (1);
 	usleep(p->info->ttthk);
 	return (0);
 }
 
-void	*philo_routine(void *philo)
+void	*philo_loop(void *philo)
 {
 	t_philo			*p;
 	struct timeval	t;
@@ -104,7 +76,7 @@ void	*philo_routine(void *philo)
 	set_offset(philo);
 	while (1)
 	{
-		if (deathcheck(philo, &t) == 1 || endcheck(p) == -1)
+		if (check_died(philo, &t) == 1 || check_finished(p) == -1)
 		{
 			fork_drop(p, 0);
 			fork_drop(p, 1);
@@ -113,9 +85,9 @@ void	*philo_routine(void *philo)
 		if (p->f[1] == NULL || (fork_check(p, 0, 0) == 0 && p->go == 1))
 			continue ;
 		p->go = 0;
-		if (grab_fork(philo, 0) == 0 && grab_fork(philo, 1) == 0)
+		if (!fork_take(philo, 0) && !fork_take(philo, 1))
 		{
-			if (eat(philo) == 1 || nap(philo) == 1 || think(philo) == 1)
+			if (p_eat(philo) == 1 || p_sleep(philo) == 1 || p_think(philo) == 1)
 				return (NULL);
 		}
 		else

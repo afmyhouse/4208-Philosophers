@@ -1,11 +1,11 @@
 
 #include "philo_bonus.h"
 
-int	grab_fork(t_philo *p)
+int	fork_take(t_philo *p)
 {
 	if (sem_wait(p->info->sem_forks) == 0)
 	{
-		if (printstate(p, FORK, now(p)) == 1)
+		if (status_print(p, FORK, now(p)) == 1)
 			return (1);
 	}
 	else
@@ -16,7 +16,7 @@ int	grab_fork(t_philo *p)
 	return (0);
 }
 
-int	eat(t_philo *p)
+int	p_eat(t_philo *p)
 {
 	if (sem_wait(p->info->sem_death) == 0)
 	{
@@ -32,7 +32,7 @@ int	eat(t_philo *p)
 		printf("Error: sem_wait (sem_death)\n");
 		return (1);
 	}
-	printstate(p, EAT, now(p));
+	status_print(p, EAT, now(p));
 	usleep(ft_min(p->info->tteat, p->info->ttdie));
 	if (fork_drop(p) == 1 || fork_drop(p) == 1)
 		return (1);
@@ -41,23 +41,23 @@ int	eat(t_philo *p)
 	return (0);
 }
 
-int	nap(t_philo *p)
+int	p_sleep(t_philo *p)
 {
-	if (printstate(p, SLEEP, now(p)) == 1)
+	if (status_print(p, SLEEP, now(p)) == 1)
 		return (1);
 	usleep(p->info->ttslp);
 	return (0);
 }
 
-int	think(t_philo *p)
+int	p_think(t_philo *p)
 {
-	if (printstate(p, THINK, now(p)) == 1)
+	if (status_print(p, THINK, now(p)) == 1)
 		return (1);
 	usleep(p->info->ttthk);
 	return (0);
 }
 
-int	philo_routine(t_philo *p)
+int	philo_loop(t_philo *p)
 {
 	set_time(p);
 	while (1)
@@ -65,10 +65,10 @@ int	philo_routine(t_philo *p)
 		if (p->info->phqty < 2)
 			continue ;
 		sem_wait(p->info->sem_go);
-		if (grab_fork(p) == 0 && grab_fork(p) == 0)
+		if (fork_take(p) == 0 && fork_take(p) == 0)
 		{
 			sem_post(p->info->sem_go);
-			if (eat(p) == 1 || nap(p) == 1 || think(p) == 1)
+			if (p_eat(p) == 1 || p_sleep(p) == 1 || p_think(p) == 1)
 				endr(p);
 		}
 		else

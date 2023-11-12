@@ -35,7 +35,7 @@ long long	utime(struct timeval t)
 	return (t.tv_sec * 1000000 + t.tv_usec);
 }
 
-long long	deltatime(struct timeval t0, struct timeval t1)
+long long	dtime(struct timeval t0, struct timeval t1)
 {
 	return ((utime(t1) - utime(t0)) / 1000);
 }

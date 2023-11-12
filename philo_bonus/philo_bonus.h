@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:53:22 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/12 18:42:22 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/12 22:26:18 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ t_info			*info_init(char **argv);
 int				set_time(t_philo *p);
 struct timeval	now(t_philo *p);
 long long		utime(struct timeval t);
-long long		deltatime(struct timeval t0, struct timeval t1);
+long long		dtime(struct timeval t0, struct timeval t1);
 
 t_philo			*philo_new(int id, t_info *data);
 void			philo_add(t_philo **p, t_philo *new);
@@ -77,15 +77,15 @@ t_philo			*philo_init(t_info *data);
 int				set_processes(t_philo *p);
 int				seminit(t_info *data);
 
-int				grab_fork(t_philo *p);
-int				eat(t_philo *p);
-int				nap(t_philo *p);
-int				think(t_philo *p);
-int				philo_routine(t_philo *p);
+int				fork_take(t_philo *p);
+int				p_eat(t_philo *p);
+int				p_sleep(t_philo *p);
+int				p_think(t_philo *p);
+int				philo_loop(t_philo *p);
 
 int				set_offset(t_philo *p);
-int				deathcheck(t_philo *p);
-int				printstate(t_philo *p, int state, struct timeval t);
+int				check_died(t_philo *p);
+int				status_print(t_philo *p, int state, struct timeval t);
 void			*bigbrother(void *philo);
 
 int				fork_drop(t_philo *p);

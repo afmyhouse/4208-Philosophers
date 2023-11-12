@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:51:32 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/12 18:16:11 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/12 21:31:29 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	set_offset(t_philo *p)
 	return (0);
 }
 
-int	deathcheck(t_philo *p)
+int	check_died(t_philo *p)
 {
 	if (sem_wait(p->info->sem_death) == 0)
 	{
@@ -40,7 +40,7 @@ int	deathcheck(t_philo *p)
 		{
 			if (utime(p->t) - utime(p->t0) > p->info->ttdie)
 			{
-				printstate(p, 4, p->t);
+				status_print(p, 4, p->t);
 				endr(p);
 				return (0);
 			}
@@ -59,21 +59,21 @@ int	deathcheck(t_philo *p)
 	return (0);
 }
 
-int	printstate(t_philo *p, int state, struct timeval t)
+int	status_print(t_philo *p, int state, struct timeval t)
 {
 	if (sem_wait(p->info->sem_print) == 0)
 	{
 		if (state == FORK)
 			printf("%lld %d has taken a fork\n", \
-				deltatime(p->info->offset, t), p->id);
+				dtime(p->info->offset, t), p->id);
 		else if (state == EAT)
-			printf("%lld %d is eating\n", deltatime(p->info->offset, t), p->id);
+			printf("%lld %d is eating\n", dtime(p->info->offset, t), p->id);
 		else if (state == SLEEP)
-			printf("%lld %d is SLEEP\n", deltatime(p->info->offset, t), p->id);
+			printf("%lld %d is SLEEP\n", dtime(p->info->offset, t), p->id);
 		else if (state == THINK)
-			printf("%lld %d is THINK\n", deltatime(p->info->offset, t), p->id);
+			printf("%lld %d is THINK\n", dtime(p->info->offset, t), p->id);
 		else if (state == DEAD)
-			printf("%lld %d died\n", deltatime(p->info->offset, t), p->id);
+			printf("%lld %d died\n", dtime(p->info->offset, t), p->id);
 		if (sem_post(p->info->sem_print) != 0)
 		{
 			printf("Error: sem_post (sem_print)\n");
@@ -95,7 +95,7 @@ void	*bigbrother(void *philo)
 	p = (t_philo *)philo;
 	while (1)
 	{
-		if (deathcheck(p) != 0)
+		if (check_died(p) != 0)
 			return (NULL);
 	}
 	return (0);

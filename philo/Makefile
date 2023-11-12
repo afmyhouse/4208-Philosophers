@@ -6,7 +6,7 @@
 #    By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/07 13:50:35 by antoda-s          #+#    #+#              #
-#    Updated: 2023/11/12 17:58:55 by antoda-s         ###   ########.fr        #
+#    Updated: 2023/11/12 21:52:30 by antoda-s         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ NAME			=	philo
 all:				$(NAME)
 
 $(NAME):			$(OBJS)
-					$(CC) $(CF) $(OBJS) -pthread -o $(NAME)
+					$(CC) $(CF) $(OBJS) -lpthread -o $(NAME)
 
 msani:				$(OBJS)
 					$(CC) $(CFS) -g $(OBJS) -pthread -o $(NAME)

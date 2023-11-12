@@ -75,7 +75,7 @@ int	set_processes(t_philo *p)
 				return (1);
 			if (pthread_detach(thread) != 0)
 				return (1);
-			exit(philo_routine(tmp));
+			exit(philo_loop(tmp));
 		}
 		else
 			tmp = tmp->next;
