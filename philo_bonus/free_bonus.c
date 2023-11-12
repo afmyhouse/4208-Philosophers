@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:53:18 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/11 14:39:10 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/12 18:13:26 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	philofree(t_philo *p)
 
 	tmp = p;
 	next = tmp;
-	free_data(p->d);
+	free_data(p->info);
 	if (p != NULL)
 	{
 		while (tmp->next != NULL && tmp->next != p)

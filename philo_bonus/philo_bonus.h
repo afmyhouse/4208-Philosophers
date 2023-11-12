@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:53:22 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/11 14:39:10 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/12 18:42:22 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@
 # include <sys/wait.h>
 
 # define FORK 0
-# define EATING 1
-# define SLEEPING 2
-# define THINKING 3
+# define EAT 1
+# define SLEEP 2
+# define THINK 3
 # define DEAD 4
 # define INTMAX	2147483647
 # define INTMIN	-2147483648
@@ -53,7 +53,7 @@ typedef struct s_philo
 {
 	int					id;
 	pid_t				pid;
-	t_info				*d;
+	t_info				*info;
 	struct timeval		t0;
 	struct timeval		t;
 	int					meals;
@@ -64,7 +64,7 @@ typedef struct s_philo
 int				invalid_argc(int argc);
 int				invalid_argv(char **argv);
 int				invalid_info(t_info *d);
-t_info			*philo_info(char **argv);
+t_info			*info_init(char **argv);
 
 int				set_time(t_philo *p);
 struct timeval	now(t_philo *p);
@@ -88,7 +88,7 @@ int				deathcheck(t_philo *p);
 int				printstate(t_philo *p, int state, struct timeval t);
 void			*bigbrother(void *philo);
 
-int				drop_fork(t_philo *p);
+int				fork_drop(t_philo *p);
 void			endr(t_philo *p);
 int				philo_waiter(t_philo *p);
 

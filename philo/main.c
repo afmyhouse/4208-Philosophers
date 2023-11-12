@@ -6,16 +6,34 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:48:13 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/11 14:39:10 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/12 19:08:10 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+/// @brief 		Check validity the TTDIE, TTEAT, TTSLP, PHQTY parameters
+/// @param info	Pointer to the t_info structure
+/// @return		SUCCESS if parameters are valid, ERROR otherwise
+int	invalid_info(t_info *info)
+{
+	if (info->phqty < 1 || info->phqty > INTMAX
+		|| info->ttdie < 0 || info->ttdie > INTMAX || info->ttdie < INTMIN
+		|| info->tteat < 0 || info->tteat > INTMAX || info->tteat < INTMIN
+		|| info->ttslp < 0 || info->ttslp > INTMAX || info->ttslp < INTMIN
+		|| (info->mealqty != NULL
+			&& (*info->mealqty < 1 || *info->mealqty > INTMAX || *info->mealqty < INTMIN)))
+	{
+		printf("Error: invalid arguments\n");
+		return (ERROR);
+	}
+	return (SUCCESS);
+}
+
 /// @brief 			checks if the number of arguments is valid
 /// @param argc		Number of arguments
 /// @return			SUCCESS if number of arguments is valid, ERROR otherwise
-int	invalid_argc(int argc)
+static int	invalid_argc(int argc)
 {
 	if (argc < 5 || argc > 6)
 	{
@@ -28,7 +46,7 @@ int	invalid_argc(int argc)
 /// @brief 			checks if the arguments are valid
 /// @param argv		arguments to validate
 /// @return			SUCCESS if arguments are valid, ERROR otherwise
-int	invalid_argv(char **argv)
+static int	invalid_argv(char **argv)
 {
 	int		i;
 	char	*t;
@@ -62,24 +80,26 @@ static int	init_all(char **argv)
 	t_fork	*f;
 	t_info	*info;
 
-	info = philo_info(argv);
+	info = info_init(argv);
 	if (!info)
 		return (ERROR);
-	if (init_aux_mtx(info) == ERROR && free_data(info) == SUCCESS)
+	if (mtx_init(info) == ERROR && free_data(info) == SUCCESS)
 		return (ERROR);
 	p = philo_init(info);
 	if (!p)
 		return (ERROR);
-	f = forkinit(p);
+	f = fork_init(p);
 	if (!f)
 		return (ERROR);
-	set_forks(p, f);
-	if (set_threads(p) == 1 || join_threads(p) == 1 || destroyer(info, f) == 1)
+	fork_set(p, f);
+	if (set_threads(p) == 1
+		|| join_threads(p) == 1
+		|| mtxs_destroyer(info, f) == 1)
 	{
-		philo_free(p, f);
+		free_philo(p, f);
 		return (ERROR);
 	}
-	philo_free(p, f);
+	free_philo(p, f);
 	return (SUCCESS);
 }
 
@@ -91,6 +111,7 @@ int	main(int argc, char **argv)
 {
 	if (invalid_argc(argc) || invalid_argv(argv))
 		return (ERROR);
-	init_all(argv);
+	if (init_all(argv) == ERROR)
+		return (ERROR);
 	return (SUCCESS);
 }

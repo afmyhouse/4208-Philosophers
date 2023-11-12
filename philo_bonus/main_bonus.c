@@ -8,7 +8,7 @@ int	main(int argc, char **argv)
 
 	if (invalid_argc(argc) == 1 || invalid_argv(argv) == 1)
 		return (1);
-	d = philo_info(argv);
+	d = info_init(argv);
 	if (!d)
 		return (1);
 	p = philo_init(d);
