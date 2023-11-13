@@ -1,27 +1,50 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   waiter_bonus.c                                     :+:      :+:    :+:   */
+/*   forks_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:14:12 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/13 17:30:30 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/13 19:18:38 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-int	drop_fork(t_philo *p)
+/// @brief 			Drops the fork
+/// @param p		Pointer to the list of philosofers
+/// @return			SUCCESS if fork is free, ERROR otherwise
+int	fork_drop(t_philo *p)
 {
 	if (sem_post(p->d->sem_forks) != 0)
 	{
 		printf("Error: sem_post (fork)\n");
-		return (1);
+		return (ERROR);
 	}
-	return (0);
+	return (SUCCESS);
 }
 
+/// @brief 		Takes the fork
+/// @param p	Pointer to the philosofer
+/// @return		SUCCESS if fork is taken, ERROR otherwise
+int	fork_take(t_philo *p)
+{
+	if (sem_wait(p->d->sem_forks) == 0)
+	{
+		if (print_status(p, FORK, now(p)) == 1)
+			return (ERROR);
+	}
+	else
+	{
+		printf("Error: sem_wait (forks)\n");
+		return (ERROR);
+	}
+	return (SUCCESS);
+}
+
+/// @brief 		Checks if the meal is over
+/// @param p	Pointer to the philosofer
 void	endr(t_philo *p)
 {
 	int	i;
@@ -32,25 +55,7 @@ void	endr(t_philo *p)
 		if (sem_post(p->d->sem_end) != 0)
 		{
 			printf("Error: sem_post (sem_end)\n");
-			exit(1);
+			exit(ERROR);
 		}
 	}
-}
-
-int	philo_waiter(t_philo *p)
-{
-	int		i;
-	t_philo	*tmp;
-
-	tmp = p;
-	i = p->d->phqty;
-	while (i--)
-		sem_wait(p->d->sem_end);
-	while (tmp->next != NULL && tmp->next != p)
-	{
-		kill(tmp->pid, SIGKILL);
-		tmp = tmp->next;
-	}
-	kill(tmp->pid, SIGKILL);
-	return (0);
 }

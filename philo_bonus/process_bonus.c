@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   processes.c                                        :+:      :+:    :+:   */
+/*   process_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 18:01:56 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/13 18:02:51 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/13 19:15:19 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ int	set_processes(t_philo *p)
 			return (ERROR);
 		else if (tmp->pid == 0)
 		{
-			if (pthread_create(&thread, NULL, &bigbrother, tmp) != 0)
+			if (pthread_create(&thread, NULL, &lifeguard, tmp) != 0)
 				return (ERROR);
 			if (pthread_detach(thread) != 0)
 				return (ERROR);
-			exit(philo_routine(tmp));
+			exit(philo_loop(tmp));
 		}
 		else
 			tmp = tmp->next;

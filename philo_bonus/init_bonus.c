@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:13:19 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/13 18:02:30 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/13 19:06:24 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,37 @@ t_philo	*init_philo(t_info *info)
 	return (p);
 }
 
+/// @brief 		Initializes the t_info structure with global info
+/// @param argv	Arguments with the info to initialize
+/// @return		Pointer to the t_info structure
+t_info	*init_info(char **argv)
+{
+	t_info	*info;
 
+	info = malloc(sizeof(t_info));
+	ft_bzero(info, sizeof(t_info));
+	info->phqty = ft_long_atoi(argv[1]);
+	info->ttdie = ft_long_atoi(argv[2]);
+	info->tteat = ft_long_atoi(argv[3]);
+	info->ttslp = ft_long_atoi(argv[4]);
+	if (argv[5] != NULL)
+	{
+		info->eatqty = malloc(sizeof(long long));
+		*info->eatqty = ft_long_atoi(argv[5]);
+	}
+	if (invalid_info(info) == 1 && free_data(info) == 0)
+		return (NULL);
+	ft_msec2usec(&info->ttdie);
+	ft_msec2usec(&info->tteat);
+	ft_msec2usec(&info->ttslp);
+	if (info->phqty % 2 && (info->ttdie - info->tteat - info->ttslp) / 2 > 0)
+		info->ttthk = (info->ttdie - info->tteat - info->ttslp) / 2;
+	return (info);
+}
+
+/// @brief 		Initializes the semaphores
+/// @param info	Pointer to the t_info structure
+/// @return		SUCCESS if semaphores are initialized, ERROR otherwise
 int	init_semaphore(t_info *info)
 {
 	sem_unlink("forks");

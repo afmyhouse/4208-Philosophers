@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:48:13 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/13 18:04:27 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/13 19:00:58 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,13 @@
 /// @return		SUCCESS if parameters are valid, ERROR otherwise
 int	invalid_info(t_info *info)
 {
-	if (info->phqty < 1 || info->phqty > INTMAX// || info->phqty < INTMIN
+	if (info->phqty < 1 || info->phqty > INTMAX
 		|| info->ttdie < 0 || info->ttdie > INTMAX || info->ttdie < INTMIN
 		|| info->tteat < 0 || info->tteat > INTMAX || info->tteat < INTMIN
 		|| info->ttslp < 0 || info->ttslp > INTMAX || info->ttslp < INTMIN
 		|| (info->eatqty != NULL
-			&& (*info->eatqty < 1 || *info->eatqty > INTMAX || *info->eatqty < INTMIN)))
+			&& (*info->eatqty < 1 || *info->eatqty > INTMAX
+				|| *info->eatqty < INTMIN)))
 	{
 		printf("Error: invalid arguments\n");
 		return (ERROR);

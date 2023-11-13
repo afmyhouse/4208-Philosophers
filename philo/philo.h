@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:47:42 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/13 18:07:06 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/13 19:01:09 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ typedef struct s_philo
 int			invalid_info(t_info *d);
 //static int	invalid_argc(int argc);
 //static int	invalid_argv(char **argv);
-//static int	invalid_argv(char **argv)
 
 int			mtx_init(t_info *d);
 int			set_time(struct timeval *t);

@@ -6,7 +6,7 @@
 #    By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 17:39:58 by antoda-s          #+#    #+#              #
-#    Updated: 2023/11/13 18:03:18 by antoda-s         ###   ########.fr        #
+#    Updated: 2023/11/13 19:16:41 by antoda-s         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ FILES			=	main_bonus.c
 FILES			+=	init_bonus.c
 FILES			+=	loop_bonus.c
 FILES			+=	lifeguard_bonus.c
-FILES			+=	waiter_bonus.c
+FILES			+=	forks_bonus.c
 FILES			+=	free_bonus.c
 FILES			+=	ft_tools_bonus.c
 FILES			+=	time_bonus.c

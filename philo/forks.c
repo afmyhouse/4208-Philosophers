@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:47:55 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/13 18:07:06 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/13 19:09:35 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,10 @@ int	fork_upd(t_philo *p, int fork_id, int philo_id)
 	return (SUCCESS);
 }
 
+/// @brief 			Drops the fork
+/// @param p		Pointer to the list of philosofers
+/// @param fork_id	fork to drop
+/// @return			SUCCESS if fork is free, ERROR otherwise
 int	fork_drop(t_philo *p, int fork_id)
 {
 	if (p->f[fork_id] == NULL)

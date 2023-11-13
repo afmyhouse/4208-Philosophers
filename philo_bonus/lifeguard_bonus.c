@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:12:39 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/13 18:13:09 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/13 19:19:36 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	print_status(t_philo *p, int state, struct timeval t)
 	return (SUCCESS);
 }
 
-void	*bigbrother(void *philo)
+void	*lifeguard(void *philo)
 {
 	t_philo	*p;
 
@@ -102,4 +102,22 @@ void	*bigbrother(void *philo)
 			return (NULL);
 	}
 	return (0);
+}
+
+int	philo_service(t_philo *p)
+{
+	int		i;
+	t_philo	*tmp;
+
+	tmp = p;
+	i = p->d->phqty;
+	while (i--)
+		sem_wait(p->d->sem_end);
+	while (tmp->next != NULL && tmp->next != p)
+	{
+		kill(tmp->pid, SIGKILL);
+		tmp = tmp->next;
+	}
+	kill(tmp->pid, SIGKILL);
+	return (SUCCESS);
 }
