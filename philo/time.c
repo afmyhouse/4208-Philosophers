@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:48:01 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/10 19:37:06 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/12 21:26:50 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ long long	utime(struct timeval t)
 	return (t.tv_sec * 1000000 + t.tv_usec);
 }
 
-long long	deltatime(struct timeval t0, struct timeval t1)
+long long	dtime(struct timeval t0, struct timeval t1)
 {
 	return ((utime(t1) - utime(t0)) / 1000);
 }

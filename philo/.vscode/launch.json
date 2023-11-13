@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/anton/Learn/42/common-core/42-08-Philo",
-      "program": "/home/anton/Learn/42/common-core/42-08-Philo/build/Debug/outDebug",
+      "cwd": "/home/anton/Learn/42/common-core/42-08-Philo/philo",
+      "program": "/home/anton/Learn/42/common-core/42-08-Philo/philo/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

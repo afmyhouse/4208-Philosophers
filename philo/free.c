@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:43:58 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/12 19:08:10 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/13 17:34:23 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	free_data(t_info *info)
 {
-	if (info->mealqty != NULL)
-		free(info->mealqty);
+	if (info->eatqty != NULL)
+		free(info->eatqty);
 	if (info->mtx_offset.mtx != NULL)
 		free(info->mtx_offset.mtx);
 	if (info->mtx_print.mtx != NULL)

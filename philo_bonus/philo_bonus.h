@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/07 13:53:22 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/12 18:42:22 by antoda-s         ###   ########.fr       */
+/*   Created: 2023/11/13 13:13:04 by antoda-s          #+#    #+#             */
+/*   Updated: 2023/11/13 18:07:59 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <signal.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include "error.h"
 
 # define FORK 0
 # define EAT 1
@@ -31,6 +32,11 @@
 # define DEAD 4
 # define INTMAX	2147483647
 # define INTMIN	-2147483648
+# define PHQTY 1
+# define TTDIE 2
+# define TTEAT 3
+# define TTSLP 4
+# define MEALQTY 5
 
 typedef struct s_info
 {
@@ -39,7 +45,7 @@ typedef struct s_info
 	long long		tteat;
 	long long		ttslp;
 	long long		ttthk;
-	long long		*cap;
+	long long		*eatqty;
 	struct timeval	offset;
 	sem_t			*sem_forks;
 	sem_t			*sem_print;
@@ -53,7 +59,7 @@ typedef struct s_philo
 {
 	int					id;
 	pid_t				pid;
-	t_info				*info;
+	t_info				*d;
 	struct timeval		t0;
 	struct timeval		t;
 	int					meals;
@@ -61,21 +67,21 @@ typedef struct s_philo
 	struct s_philo		*next;
 }	t_philo;
 
-int				invalid_argc(int argc);
-int				invalid_argv(char **argv);
+//int				argccheck(int argc);
+//int				inputcheck(char **argv);
 int				invalid_info(t_info *d);
-t_info			*info_init(char **argv);
+t_info			*get_data(char **argv);
 
 int				set_time(t_philo *p);
 struct timeval	now(t_philo *p);
 long long		utime(struct timeval t);
-long long		deltatime(struct timeval t0, struct timeval t1);
+long long		dtime(struct timeval t0, struct timeval t1);
 
-t_philo			*philo_new(int id, t_info *data);
-void			philo_add(t_philo **p, t_philo *new);
-t_philo			*philo_init(t_info *data);
+t_philo			*new_philo(int id, t_info *data);
+void			add_philo(t_philo **p, t_philo *new);
+t_philo			*init_philo(t_info *data);
 int				set_processes(t_philo *p);
-int				seminit(t_info *data);
+int				init_semaphore(t_info *data);
 
 int				grab_fork(t_philo *p);
 int				eat(t_philo *p);
@@ -84,22 +90,23 @@ int				think(t_philo *p);
 int				philo_routine(t_philo *p);
 
 int				set_offset(t_philo *p);
-int				deathcheck(t_philo *p);
-int				printstate(t_philo *p, int state, struct timeval t);
+int				check_died(t_philo *p);
+int				print_status(t_philo *p, int state, struct timeval t);
 void			*bigbrother(void *philo);
 
-int				fork_drop(t_philo *p);
+int				drop_fork(t_philo *p);
 void			endr(t_philo *p);
 int				philo_waiter(t_philo *p);
 
 int				semunlinker(void);
 int				semdestroyer(t_info *d);
 int				free_data(t_info *d);
-void			philofree(t_philo *p);
+void			free_philo(t_philo *p);
 
 size_t			ft_strlen(const char *s);
 long long		ft_long_atoi(const char *nptr);
 void			ft_bzero(void *s, size_t n);
 long long		ft_min(long long a, long long b);
+void			ft_msec2usec(void *t);
 
 #endif
