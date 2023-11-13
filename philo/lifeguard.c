@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:43:54 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/12 21:41:42 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/13 18:07:06 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	set_finished(t_philo *p, int state)
 	{
 		if (state == DEAD)
 			p->info->end = 1;
-		if (p->info->mealqty != NULL && state == EAT)
+		if (p->info->eatqty != NULL && state == EAT)
 			p->info->end++;
 		if (pthread_mutex_unlock(p->info->mtx_end.mtx) != 0)
 		{
@@ -86,7 +86,7 @@ int	check_died(t_philo *p, struct timeval *t)
 		{
 			if (utime(*t) - utime(p->t0) > p->info->ttdie)
 			{
-				status_print(p, DEAD, *t);
+				print_status(p, DEAD, *t);
 				set_finished(p, DEAD);
 			}
 		}
@@ -104,7 +104,7 @@ int	check_died(t_philo *p, struct timeval *t)
 	return (SUCCESS);
 }
 
-int	status_print(t_philo *p, int state, struct timeval t)
+int	print_status(t_philo *p, int state, struct timeval t)
 {
 	if (pthread_mutex_lock(p->info->mtx_print.mtx) == 0)
 	{

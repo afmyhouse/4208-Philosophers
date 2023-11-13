@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:44:02 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/13 09:40:26 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/13 18:04:27 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 /// @param id	Philosofer's id
 /// @param info	Pointer to the t_info structure
 /// @return		Pointer to the new philosofer
-t_philo	*philo_new(int id, t_info *info)
+t_philo	*new_philo(int id, t_info *info)
 {
 	t_philo	*p;
 
@@ -34,7 +34,7 @@ t_philo	*philo_new(int id, t_info *info)
 /// @brief 		Adds a new created philosofer to the list
 /// @param p	Pointer to the list of philosofers
 /// @param		new	Pointer to the new philosofer
-void	philo_add(t_philo **p, t_philo *new)
+void	add_philo(t_philo **p, t_philo *new)
 {
 	t_philo	*tmp;
 
@@ -55,7 +55,7 @@ void	philo_add(t_philo **p, t_philo *new)
 /// @brief		Initializes the philosofer's list
 /// @param info	Pointer to the t_info structure
 /// @return		Pointer to the list of philosofers
-t_philo	*philo_init(t_info *info)
+t_philo	*init_philo(t_info *info)
 {
 	int		i;
 	t_philo	*p;
@@ -66,14 +66,14 @@ t_philo	*philo_init(t_info *info)
 	i = 0;
 	while (++i <= info->phqty)
 	{
-		new = philo_new(i, info);
+		new = new_philo(i, info);
 		if (!new)
 		{
 			free_philo(p, NULL);
 			free_data(info);
 			return (NULL);
 		}
-		philo_add(&p, new);
+		add_philo(&p, new);
 	}
 	return (p);
 }
@@ -81,7 +81,7 @@ t_philo	*philo_init(t_info *info)
 /// @brief 		Initializes the t_info structure with global info
 /// @param argv	Arguments with the info to initialize
 /// @return		Pointer to the t_info structure
-t_info	*info_init(char **argv)
+t_info	*init_info(char **argv)
 {
 	t_info	*info;
 
@@ -95,8 +95,8 @@ t_info	*info_init(char **argv)
 	info->ttslp = ft_long_atoi(argv[TTSLP]);
 	if (argv[MEALQTY] != NULL)
 	{
-		info->mealqty = malloc(sizeof(long long));
-		*info->mealqty = ft_long_atoi(argv[MEALQTY]);
+		info->eatqty = malloc(sizeof(long long));
+		*info->eatqty = ft_long_atoi(argv[MEALQTY]);
 		info->end = 1 - info->phqty;
 	}
 	if (invalid_info(info) == ERROR && free_data(info) == SUCCESS)
@@ -112,7 +112,7 @@ t_info	*info_init(char **argv)
 /// @brief 		Initializes the forks
 /// @param p	Pointer to the list of philosofers
 /// @return		Poiter to the fork structure
-t_fork	*fork_init(t_philo *p)
+t_fork	*init_fork(t_philo *p)
 {
 	t_fork	*f;
 	int		i;

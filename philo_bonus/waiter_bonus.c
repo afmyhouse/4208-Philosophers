@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_waiter_bonus.c                               :+:      :+:    :+:   */
+/*   waiter_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:14:12 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/13 13:14:13 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/13 17:30:30 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	endr(t_philo *p)
 {
 	int	i;
 
-	i = p->d->n_philo;
+	i = p->d->phqty;
 	while (i--)
 	{
 		if (sem_post(p->d->sem_end) != 0)
@@ -43,7 +43,7 @@ int	philo_waiter(t_philo *p)
 	t_philo	*tmp;
 
 	tmp = p;
-	i = p->d->n_philo;
+	i = p->d->phqty;
 	while (i--)
 		sem_wait(p->d->sem_end);
 	while (tmp->next != NULL && tmp->next != p)

@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:13:27 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/13 13:46:19 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/13 18:00:50 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,54 +50,52 @@ static int	invalid_argv(char **argv)
 	return (0);
 }
 
-int	datacheck(t_data *info)
+/// @brief 		Check validity the TTDIE, TTEAT, TTSLP, PHQTY parameters
+/// @param info	Pointer to the t_info structure
+/// @return		SUCCESS if parameters are valid, ERROR otherwise
+int	invalid_info(t_info *info)
 {
-	int	r;
-
-	r = 0;
-	if (info->n_philo < 1 || info->n_philo > INTMAX || info->n_philo < INTMIN)
-		r = 1;
-	if (info->t_die < 0 || info->t_die > INTMAX || info->t_die < INTMIN)
-		r = 1;
-	if (info->t_eat < 0 || info->t_eat > INTMAX || info->t_eat < INTMIN)
-		r = 1;
-	if (info->t_sleep < 0 || info->t_sleep > INTMAX || info->t_sleep < INTMIN)
-		r = 1;
-	if (info->cap != NULL && (*info->cap < 1 || *info->cap > INTMAX || *info->cap < INTMIN))
-		r = 1;
-	if (r == 1)
+	if (info->phqty < 1 || info->phqty > INTMAX// || info->phqty < INTMIN
+		|| info->ttdie < 0 || info->ttdie > INTMAX || info->ttdie < INTMIN
+		|| info->tteat < 0 || info->tteat > INTMAX || info->tteat < INTMIN
+		|| info->ttslp < 0 || info->ttslp > INTMAX || info->ttslp < INTMIN
+		|| (info->eatqty != NULL
+			&& (*info->eatqty < 1 || *info->eatqty > INTMAX || *info->eatqty < INTMIN)))
+	{
 		printf("Error: invalid arguments\n");
-	return (r);
+		return (ERROR);
+	}
+	return (SUCCESS);
 }
 
-t_data	*get_data(char **argv)
+t_info	*get_data(char **argv)
 {
-	t_data	*info;
+	t_info	*info;
 
-	info = malloc(sizeof(t_data));
-	ft_bzero(info, sizeof(t_data));
-	info->n_philo = ft_long_atoi(argv[1]);
-	info->t_die = ft_long_atoi(argv[2]);
-	info->t_eat = ft_long_atoi(argv[3]);
-	info->t_sleep = ft_long_atoi(argv[4]);
+	info = malloc(sizeof(t_info));
+	ft_bzero(info, sizeof(t_info));
+	info->phqty = ft_long_atoi(argv[1]);
+	info->ttdie = ft_long_atoi(argv[2]);
+	info->tteat = ft_long_atoi(argv[3]);
+	info->ttslp = ft_long_atoi(argv[4]);
 	if (argv[5] != NULL)
 	{
-		info->cap = malloc(sizeof(long long));
-		*info->cap = ft_long_atoi(argv[5]);
+		info->eatqty = malloc(sizeof(long long));
+		*info->eatqty = ft_long_atoi(argv[5]);
 	}
-	if (datacheck(info) == 1 && datafree(info) == 0)
+	if (invalid_info(info) == 1 && free_data(info) == 0)
 		return (NULL);
-	info->t_die = info->t_die * 1000;
-	info->t_eat = info->t_eat * 1000;
-	info->t_sleep = info->t_sleep * 1000;
-	if (info->n_philo % 2 && (info->t_die - info->t_eat - info->t_sleep) / 2 > 0)
-		info->t_think = (info->t_die - info->t_eat - info->t_sleep) / 2;
+	info->ttdie = info->ttdie * 1000;
+	info->tteat = info->tteat * 1000;
+	info->ttslp = info->ttslp * 1000;
+	if (info->phqty % 2 && (info->ttdie - info->tteat - info->ttslp) / 2 > 0)
+		info->ttthk = (info->ttdie - info->tteat - info->ttslp) / 2;
 	return (info);
 }
 
 int	main(int argc, char **argv)
 {
-	t_data	*d;
+	t_info	*d;
 	t_philo	*p;
 
 	if (invalid_argc(argc) == 1 || invalid_argv(argv) == 1)
@@ -105,16 +103,16 @@ int	main(int argc, char **argv)
 	d = get_data(argv);
 	if (!d)
 		return (1);
-	p = philo_init(d);
+	p = init_philo(d);
 	if (!p)
 		return (1);
-	if (seminit(d) == 1 || set_processes(p) == 1)
+	if (init_semaphore(d) == 1 || set_processes(p) == 1)
 	{
-		philofree(p);
+		free_philo(p);
 		return (1);
 	}
 	philo_waiter(p);
 	semdestroyer(d);
-	philofree(p);
+	free_philo(p);
 	return (0);
 }

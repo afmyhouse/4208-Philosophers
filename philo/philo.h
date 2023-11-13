@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:47:42 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/12 22:26:18 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/13 18:07:06 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct s_info
 	long long		tteat;
 	long long		ttslp;
 	long long		ttthk;
-	long long		*mealqty;
+	long long		*eatqty;
 	struct timeval	offset;
 	long long		end;
 	t_fork			mtx_offset;
@@ -80,14 +80,14 @@ long long	utimestamp(struct timeval t0);
 long long	utime(struct timeval t);
 long long	dtime(struct timeval t0, struct timeval t1);
 
-t_info		*info_init(char **argv);
-t_philo		*philo_new(int id, t_info *data);
-void		philo_add(t_philo **p, t_philo *new);
-t_philo		*philo_init(t_info *data);
+t_info		*init_info(char **argv);
+t_philo		*new_philo(int id, t_info *data);
+void		add_philo(t_philo **p, t_philo *new);
+t_philo		*init_philo(t_info *data);
 
 int			set_threads(t_philo *p);
 
-t_fork		*fork_init(t_philo *p);
+t_fork		*init_fork(t_philo *p);
 int			mtx_destroy(pthread_mutex_t *mtx);
 int			mtxs_destroyer(t_info *d, t_fork *f);
 
@@ -101,7 +101,7 @@ int			set_offset(t_philo *p);
 int			set_finished(t_philo *p, int state);
 int			check_finished(t_philo *p);
 int			check_died(t_philo *p, struct timeval *t);
-int			status_print(t_philo *p, int state, struct timeval t);
+int			print_status(t_philo *p, int state, struct timeval t);
 
 void		fork_set(t_philo *p, t_fork *f);
 int			fork_check(t_philo *p, int fork_id, int philo_id);

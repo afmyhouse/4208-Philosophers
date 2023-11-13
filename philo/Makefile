@@ -6,17 +6,22 @@
 #    By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/07 13:50:35 by antoda-s          #+#    #+#              #
-#    Updated: 2023/11/13 14:29:49 by antoda-s         ###   ########.fr        #
+#    Updated: 2023/11/13 17:45:36 by antoda-s         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+# Name:
 NAME			=	philo
+
+# Directories:
 OBJSDIR 		= 	build/
 
+# Compiler:
 CC				=	cc
 RM				=	rm -f
 CF				=	-Wall -Wextra -Werror -fsanitize=thread
 
+# Sources:
 FILES			=	main.c
 FILES			+=	time.c
 FILES			+=	init.c

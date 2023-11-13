@@ -1,18 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_initializer_bonus.c                          :+:      :+:    :+:   */
+/*   init_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:13:19 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/13 13:13:20 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/13 18:02:30 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-t_philo	*philo_new(int id, t_data *data)
+/// @brief 		Creates a new philosofer and initializes it
+/// @param id	Philosofer's id
+/// @param info	Pointer to the t_info structure
+/// @return		Pointer to the new philosofer
+t_philo	*new_philo(int id, t_info *info)
 {
 	t_philo	*p;
 
@@ -21,11 +25,14 @@ t_philo	*philo_new(int id, t_data *data)
 		return (NULL);
 	ft_bzero(p, sizeof(t_philo));
 	p->id = id;
-	p->d = data;
+	p->d = info;
 	return (p);
 }
 
-void	philo_add(t_philo **p, t_philo *new)
+/// @brief 		Adds a new created philosofer to the list
+/// @param p	Pointer to the list of philosofers
+/// @param		new	Pointer to the new philosofer
+void	add_philo(t_philo **p, t_philo *new)
 {
 	t_philo	*tmp;
 
@@ -43,7 +50,10 @@ void	philo_add(t_philo **p, t_philo *new)
 	(*p)->prev = new;
 }
 
-t_philo	*philo_init(t_data *data)
+/// @brief		Initializes the philosofer's list
+/// @param info	Pointer to the t_info structure
+/// @return		Pointer to the list of philosofers
+t_philo	*init_philo(t_info *info)
 {
 	int		i;
 	t_philo	*p;
@@ -52,73 +62,46 @@ t_philo	*philo_init(t_data *data)
 	p = NULL;
 	new = NULL;
 	i = 0;
-	while (++i <= data->n_philo)
+	while (++i <= info->phqty)
 	{
-		new = philo_new(i, data);
+		new = new_philo(i, info);
 		if (!new)
 		{
-			philofree(p);
-			datafree(data);
+			free_philo(p);
+			free_data(info);
 			return (NULL);
 		}
-		philo_add(&p, new);
+		add_philo(&p, new);
 	}
 	return (p);
 }
 
-int	set_processes(t_philo *p)
-{
-	t_philo		*tmp;
-	int			i;
-	pthread_t	thread;
 
-	tmp = p;
-	i = p->d->n_philo;
-	set_offset(p);
-	while (i--)
-	{
-		tmp->pid = fork();
-		if (tmp->pid == -1)
-			return (1);
-		else if (tmp->pid == 0)
-		{
-			if (pthread_create(&thread, NULL, &bigbrother, tmp) != 0)
-				return (1);
-			if (pthread_detach(thread) != 0)
-				return (1);
-			exit(philo_routine(tmp));
-		}
-		else
-			tmp = tmp->next;
-	}
-	return (0);
-}
-
-int	seminit(t_data *data)
+int	init_semaphore(t_info *info)
 {
 	sem_unlink("forks");
-	data->sem_forks = sem_open("forks", O_CREAT, 0644, data->n_philo);
-	if (data->sem_forks == SEM_FAILED)
-		return (1);
+	info->sem_forks = sem_open("forks", O_CREAT, 0644, info->phqty);
+	if (info->sem_forks == SEM_FAILED)
+		return (ERROR);
 	sem_unlink("print");
-	data->sem_print = sem_open("print", O_CREAT, 0644, 1);
-	if (data->sem_print == SEM_FAILED)
-		return (1);
+	info->sem_print = sem_open("print", O_CREAT, 0644, 1);
+	if (info->sem_print == SEM_FAILED)
+		return (ERROR);
 	sem_unlink("death");
-	data->sem_death = sem_open("death", O_CREAT, 0644, 1);
-	if (data->sem_death == SEM_FAILED)
-		return (1);
+	info->sem_death = sem_open("death", O_CREAT, 0644, 1);
+	if (info->sem_death == SEM_FAILED)
+		return (ERROR);
 	sem_unlink("go");
-	data->sem_go = sem_open("go", O_CREAT, 0644, data->n_philo / 2);
-	if (data->sem_go == SEM_FAILED)
-		return (1);
+	info->sem_go = sem_open("go", O_CREAT, 0644, info->phqty / 2);
+	if (info->sem_go == SEM_FAILED)
+		return (ERROR);
 	sem_unlink("end");
-	data->sem_end = sem_open("end", O_CREAT, 0644, 0);
-	if (data->sem_end == SEM_FAILED)
-		return (1);
+	info->sem_end = sem_open("end", O_CREAT, 0644, 0);
+	if (info->sem_end == SEM_FAILED)
+		return (ERROR);
 	sem_unlink("time");
-	data->sem_time = sem_open("time", O_CREAT, 0644, 1);
-	if (data->sem_time == SEM_FAILED)
-		return (1);
-	return (0);
+	info->sem_time = sem_open("time", O_CREAT, 0644, 1);
+	if (info->sem_time == SEM_FAILED)
+		return (ERROR);
+	return (SUCCESS);
 }

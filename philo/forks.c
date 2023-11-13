@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:47:55 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/13 10:18:16 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/13 18:07:06 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int	fork_take(t_philo *p, int fork_id)
 	if (pthread_mutex_lock(p->f[fork_id]->mtx) == 0)
 	{
 		fork_upd(p, fork_id, p->id);
-		if (check_died(p, &t) == 1 || status_print(p, FORK, t) == 1)
+		if (check_died(p, &t) == 1 || print_status(p, FORK, t) == 1)
 		{
 			if (pthread_mutex_unlock(p->f[fork_id]->mtx) != 0)
 				printf("Error: pthread_mutex_unlock (fork)\n");

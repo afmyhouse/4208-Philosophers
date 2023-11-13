@@ -5,32 +5,72 @@
 #                                                     +:+ +:+         +:+      #
 #    By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/05/19 18:55:14 by amenses-          #+#    #+#              #
-#    Updated: 2023/11/13 13:39:07 by antoda-s         ###   ########.fr        #
+#    Created: 2023/11/13 17:39:58 by antoda-s          #+#    #+#              #
+#    Updated: 2023/11/13 18:03:18 by antoda-s         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+# Name:
+NAME			=	philo_bonus
+
+# Directories
+OBJSDIR 		= 	build/
+
+# Compilation
 CC				=	cc
 RM				=	rm -f
 CFLAGS			=	-Wall -Wextra -Werror
 
-SRCS			=	main_bonus.c init_bonus.c loop_bonus.c \
-					lifeguard_bonus.c waiter_bonus.c \
-					free_bonus.c ft_tools_bonus.c time_bonus.c \
+# Sources
+FILES			=	main_bonus.c
+FILES			+=	init_bonus.c
+FILES			+=	loop_bonus.c
+FILES			+=	lifeguard_bonus.c
+FILES			+=	waiter_bonus.c
+FILES			+=	free_bonus.c
+FILES			+=	ft_tools_bonus.c
+FILES			+=	time_bonus.c
+FILES			+=	process_bonus.c
 
-OBJS			=	$(SRCS:.c=.o)
+# Objects
+OBJS = $(addprefix $(OBJSDIR), $(FILES:.c=.o))
 
-NAME			=	philo_bonus
+#Colors:
+GRN		=	\e[38;5;118m
+YLW		=	\e[38;5;226m
+RED		=	\e[38;5;196m
+BLU		=	\e[38:5:31m
+WHT		=	\e[0m
+CYN		:= \33[1;36m
+RESET	:= \033[0m
+BOLD	:= \033[1m
 
-all:				$(NAME)
+all:	$(NAME)
 
-$(NAME):			$(OBJS)
-					$(CC) $(CFLAGS) $(OBJS) -pthread -o $(NAME)
+$(NAME): $(OBJS) build
+	@printf "$(GRN)Objects$(WHT) ready!$(WHT)\n\n"
+	@printf "\n$(CYN)Generating $(NAME) executable...$(WHT)\n"
+	$(CC) $(CF) $(OBJS) -lpthread -o $(NAME)
+	@printf "$(GRN)$(NAME)$(WHT) ready!\n\n"
+
+build:
+	@mkdir -p $(OBJSDIR)
+	@printf "\n$(CYN)Compiling source files...$(WHT)\n"
+
+$(OBJSDIR)%.o: %.c | build
+	$(CC) $(CF) -c $< -o $@
 
 clean:
-					$(RM) $(OBJS)
+	@printf "\nCleaning all $(GRN)object files$(WHT) from project...\n"
+	$(RM) $(OBJS)
+	$(RM) -r $(OBJSDIR)
 
-fclean:				clean
-					$(RM) $(NAME)
+post:
+	@printf "\nCleaning $(GRN)objects and executables$(WHT) from project...\n"
 
-re:					fclean all
+fclean:	post clean
+	$(RM) $(NAME)
+
+re:	fclean all
+
+.PHONY:	all clean fclean re build post

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_routine_bonus.c                              :+:      :+:    :+:   */
+/*   loop_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:13:46 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/13 13:13:47 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/13 18:07:59 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	grab_fork(t_philo *p)
 {
 	if (sem_wait(p->d->sem_forks) == 0)
 	{
-		if (printstate(p, FORK, now(p)) == 1)
+		if (print_status(p, FORK, now(p)) == 1)
 			return (1);
 	}
 	else
@@ -43,28 +43,28 @@ int	eat(t_philo *p)
 		printf("Error: sem_wait (sem_death)\n");
 		return (1);
 	}
-	printstate(p, EATING, now(p));
-	usleep(ft_min(p->d->t_eat, p->d->t_die));
+	print_status(p, EAT, now(p));
+	usleep(ft_min(p->d->tteat, p->d->ttdie));
 	if (drop_fork(p) == 1 || drop_fork(p) == 1)
 		return (1);
-	if (p->d->cap != NULL && ++p->meals == *p->d->cap)
+	if (p->d->eatqty != NULL && ++p->meals == *p->d->eatqty)
 		sem_post(p->d->sem_end);
 	return (0);
 }
 
 int	nap(t_philo *p)
 {
-	if (printstate(p, SLEEPING, now(p)) == 1)
+	if (print_status(p, SLEEP, now(p)) == 1)
 		return (1);
-	usleep(p->d->t_sleep);
+	usleep(p->d->ttslp);
 	return (0);
 }
 
 int	think(t_philo *p)
 {
-	if (printstate(p, THINKING, now(p)) == 1)
+	if (print_status(p, THINK, now(p)) == 1)
 		return (1);
-	usleep(p->d->t_think);
+	usleep(p->d->ttthk);
 	return (0);
 }
 
@@ -73,7 +73,7 @@ int	philo_routine(t_philo *p)
 	set_time(p);
 	while (1)
 	{
-		if (p->d->n_philo < 2)
+		if (p->d->phqty < 2)
 			continue ;
 		sem_wait(p->d->sem_go);
 		if (grab_fork(p) == 0 && grab_fork(p) == 0)
