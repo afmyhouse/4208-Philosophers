@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo_initializer_bonus.c                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/13 13:13:19 by antoda-s          #+#    #+#             */
+/*   Updated: 2023/11/13 13:13:20 by antoda-s         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-t_philo	*philo_new(int id, t_info *data)
+t_philo	*philo_new(int id, t_data *data)
 {
 	t_philo	*p;
 
@@ -10,7 +21,7 @@ t_philo	*philo_new(int id, t_info *data)
 		return (NULL);
 	ft_bzero(p, sizeof(t_philo));
 	p->id = id;
-	p->info = data;
+	p->d = data;
 	return (p);
 }
 
@@ -32,7 +43,7 @@ void	philo_add(t_philo **p, t_philo *new)
 	(*p)->prev = new;
 }
 
-t_philo	*philo_init(t_info *data)
+t_philo	*philo_init(t_data *data)
 {
 	int		i;
 	t_philo	*p;
@@ -41,13 +52,13 @@ t_philo	*philo_init(t_info *data)
 	p = NULL;
 	new = NULL;
 	i = 0;
-	while (++i <= data->phqty)
+	while (++i <= data->n_philo)
 	{
 		new = philo_new(i, data);
 		if (!new)
 		{
 			philofree(p);
-			free_data(data);
+			datafree(data);
 			return (NULL);
 		}
 		philo_add(&p, new);
@@ -62,7 +73,7 @@ int	set_processes(t_philo *p)
 	pthread_t	thread;
 
 	tmp = p;
-	i = p->info->phqty;
+	i = p->d->n_philo;
 	set_offset(p);
 	while (i--)
 	{
@@ -75,7 +86,7 @@ int	set_processes(t_philo *p)
 				return (1);
 			if (pthread_detach(thread) != 0)
 				return (1);
-			exit(philo_loop(tmp));
+			exit(philo_routine(tmp));
 		}
 		else
 			tmp = tmp->next;
@@ -83,10 +94,10 @@ int	set_processes(t_philo *p)
 	return (0);
 }
 
-int	seminit(t_info *data)
+int	seminit(t_data *data)
 {
 	sem_unlink("forks");
-	data->sem_forks = sem_open("forks", O_CREAT, 0644, data->phqty);
+	data->sem_forks = sem_open("forks", O_CREAT, 0644, data->n_philo);
 	if (data->sem_forks == SEM_FAILED)
 		return (1);
 	sem_unlink("print");
@@ -98,7 +109,7 @@ int	seminit(t_info *data)
 	if (data->sem_death == SEM_FAILED)
 		return (1);
 	sem_unlink("go");
-	data->sem_go = sem_open("go", O_CREAT, 0644, data->phqty / 2);
+	data->sem_go = sem_open("go", O_CREAT, 0644, data->n_philo / 2);
 	if (data->sem_go == SEM_FAILED)
 		return (1);
 	sem_unlink("end");

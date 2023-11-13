@@ -6,12 +6,15 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/12 17:48:08 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/12 21:45:11 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/13 11:02:32 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+/// @brief 		Set threads to start looping
+/// @param p	Pointer to the list of philosofers
+/// @return		SUCCESS if threads are set, ERROR otherwise
 int	set_threads(t_philo *p)
 {
 	t_philo	*tmp;
@@ -34,6 +37,9 @@ int	set_threads(t_philo *p)
 	return (SUCCESS);
 }
 
+/// @brief 		Join threads
+/// @param p	Pointer to the list of philosofers
+/// @return		SUCCESS if threads are joined, ERROR otherwise
 int	join_threads(t_philo *p)
 {
 	t_philo	*tmp;

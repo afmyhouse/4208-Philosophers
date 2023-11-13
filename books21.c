@@ -18,16 +18,20 @@ int	main(void)
 	pthread_create(&tid1, NULL, &Allen, NULL);
 	pthread_create(&tid2, NULL, &Bob, NULL);
 
+	sleep(5);
 printf("1ST CALL TO PTHREAD_MUTEX_INIT: \n");
 	pthread_join(tid1, NULL);
+
 printf("2ND CALL TO PTHREAD_MUTEX_INIT: \n");
+	sleep(1);
 	pthread_join(tid2, NULL);
 
 	return (0);
 }
 
 void *Allen(void *arg) {
-    pthread_mutex_lock(&book1);
+    printf("Allen is looking for books!\n");
+	pthread_mutex_lock(&book1);
     sleep(1);
     pthread_mutex_lock(&book2);
     printf("Allen has collected all books he need, he is going to do homework!\n");

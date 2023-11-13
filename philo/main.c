@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:48:13 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/12 19:08:10 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/13 13:52:45 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 /// @return		SUCCESS if parameters are valid, ERROR otherwise
 int	invalid_info(t_info *info)
 {
-	if (info->phqty < 1 || info->phqty > INTMAX
+	if (info->phqty < 1 || info->phqty > INTMAX || info->phqty < INTMIN
 		|| info->ttdie < 0 || info->ttdie > INTMAX || info->ttdie < INTMIN
 		|| info->tteat < 0 || info->tteat > INTMAX || info->tteat < INTMIN
 		|| info->ttslp < 0 || info->ttslp > INTMAX || info->ttslp < INTMIN
@@ -74,6 +74,9 @@ static int	invalid_argv(char **argv)
 	return (SUCCESS);
 }
 
+/// @brief 		Initializes all variables ant starts the program
+/// @param argv	Arguments with the info to initialize
+/// @return		SUCCESS if program ran successfully, ERROR otherwise
 static int	init_all(char **argv)
 {
 	t_philo	*p;

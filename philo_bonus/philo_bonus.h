@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/07 13:53:22 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/12 22:26:18 by antoda-s         ###   ########.fr       */
+/*   Created: 2023/11/13 13:13:04 by antoda-s          #+#    #+#             */
+/*   Updated: 2023/11/13 13:40:43 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,23 @@
 # include <signal.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include "error.h"
 
 # define FORK 0
-# define EAT 1
-# define SLEEP 2
-# define THINK 3
+# define EATING 1
+# define SLEEPING 2
+# define THINKING 3
 # define DEAD 4
 # define INTMAX	2147483647
 # define INTMIN	-2147483648
 
-typedef struct s_info
+typedef struct s_data
 {
-	int				phqty;
-	long long		ttdie;
-	long long		tteat;
-	long long		ttslp;
-	long long		ttthk;
+	int				n_philo;
+	long long		t_die;
+	long long		t_eat;
+	long long		t_sleep;
+	long long		t_think;
 	long long		*cap;
 	struct timeval	offset;
 	sem_t			*sem_forks;
@@ -47,13 +48,13 @@ typedef struct s_info
 	sem_t			*sem_go;
 	sem_t			*sem_end;
 	sem_t			*sem_time;
-}	t_info;
+}	t_data;
 
 typedef struct s_philo
 {
 	int					id;
 	pid_t				pid;
-	t_info				*info;
+	t_data				*d;
 	struct timeval		t0;
 	struct timeval		t;
 	int					meals;
@@ -61,45 +62,46 @@ typedef struct s_philo
 	struct s_philo		*next;
 }	t_philo;
 
-int				invalid_argc(int argc);
-int				invalid_argv(char **argv);
-int				invalid_info(t_info *d);
-t_info			*info_init(char **argv);
+//int				argccheck(int argc);
+//int				inputcheck(char **argv);
+int				datacheck(t_data *d);
+t_data			*get_data(char **argv);
 
 int				set_time(t_philo *p);
 struct timeval	now(t_philo *p);
 long long		utime(struct timeval t);
-long long		dtime(struct timeval t0, struct timeval t1);
+long long		deltatime(struct timeval t0, struct timeval t1);
 
-t_philo			*philo_new(int id, t_info *data);
+t_philo			*philo_new(int id, t_data *data);
 void			philo_add(t_philo **p, t_philo *new);
-t_philo			*philo_init(t_info *data);
+t_philo			*philo_init(t_data *data);
 int				set_processes(t_philo *p);
-int				seminit(t_info *data);
+int				seminit(t_data *data);
 
-int				fork_take(t_philo *p);
-int				p_eat(t_philo *p);
-int				p_sleep(t_philo *p);
-int				p_think(t_philo *p);
-int				philo_loop(t_philo *p);
+int				grab_fork(t_philo *p);
+int				eat(t_philo *p);
+int				nap(t_philo *p);
+int				think(t_philo *p);
+int				philo_routine(t_philo *p);
 
 int				set_offset(t_philo *p);
-int				check_died(t_philo *p);
-int				status_print(t_philo *p, int state, struct timeval t);
+int				deathcheck(t_philo *p);
+int				printstate(t_philo *p, int state, struct timeval t);
 void			*bigbrother(void *philo);
 
-int				fork_drop(t_philo *p);
+int				drop_fork(t_philo *p);
 void			endr(t_philo *p);
 int				philo_waiter(t_philo *p);
 
 int				semunlinker(void);
-int				semdestroyer(t_info *d);
-int				free_data(t_info *d);
+int				semdestroyer(t_data *d);
+int				datafree(t_data *d);
 void			philofree(t_philo *p);
 
 size_t			ft_strlen(const char *s);
 long long		ft_long_atoi(const char *nptr);
 void			ft_bzero(void *s, size_t n);
 long long		ft_min(long long a, long long b);
+void			ft_msec2usec(void *t);
 
 #endif

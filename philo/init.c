@@ -6,22 +6,24 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:44:02 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/12 19:33:22 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/13 09:40:26 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+/// @brief 		Creates a new philosofer and initializes it
+/// @param id	Philosofer's id
+/// @param info	Pointer to the t_info structure
+/// @return		Pointer to the new philosofer
 t_philo	*philo_new(int id, t_info *info)
 {
 	t_philo	*p;
-	//t_fork	f[2];
 
 	p = malloc(sizeof(t_philo));
 	if (!p)
 		return (NULL);
 	ft_bzero(p, sizeof(t_philo));
-	//ft_bzero(f, sizeof(t_fork) * 2);
 	p->id = id;
 	p->info = info;
 	if (info->phqty > 2 && id % 2 == 0)
@@ -29,6 +31,9 @@ t_philo	*philo_new(int id, t_info *info)
 	return (p);
 }
 
+/// @brief 		Adds a new created philosofer to the list
+/// @param p	Pointer to the list of philosofers
+/// @param		new	Pointer to the new philosofer
 void	philo_add(t_philo **p, t_philo *new)
 {
 	t_philo	*tmp;
@@ -47,6 +52,9 @@ void	philo_add(t_philo **p, t_philo *new)
 	(*p)->prev = new;
 }
 
+/// @brief		Initializes the philosofer's list
+/// @param info	Pointer to the t_info structure
+/// @return		Pointer to the list of philosofers
 t_philo	*philo_init(t_info *info)
 {
 	int		i;
@@ -70,6 +78,9 @@ t_philo	*philo_init(t_info *info)
 	return (p);
 }
 
+/// @brief 		Initializes the t_info structure with global info
+/// @param argv	Arguments with the info to initialize
+/// @return		Pointer to the t_info structure
 t_info	*info_init(char **argv)
 {
 	t_info	*info;
@@ -98,6 +109,9 @@ t_info	*info_init(char **argv)
 	return (info);
 }
 
+/// @brief 		Initializes the forks
+/// @param p	Pointer to the list of philosofers
+/// @return		Poiter to the fork structure
 t_fork	*fork_init(t_philo *p)
 {
 	t_fork	*f;
