@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:48:13 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/12 19:08:10 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/13 18:04:27 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@
 /// @return		SUCCESS if parameters are valid, ERROR otherwise
 int	invalid_info(t_info *info)
 {
-	if (info->phqty < 1 || info->phqty > INTMAX
+	if (info->phqty < 1 || info->phqty > INTMAX// || info->phqty < INTMIN
 		|| info->ttdie < 0 || info->ttdie > INTMAX || info->ttdie < INTMIN
 		|| info->tteat < 0 || info->tteat > INTMAX || info->tteat < INTMIN
 		|| info->ttslp < 0 || info->ttslp > INTMAX || info->ttslp < INTMIN
-		|| (info->mealqty != NULL
-			&& (*info->mealqty < 1 || *info->mealqty > INTMAX || *info->mealqty < INTMIN)))
+		|| (info->eatqty != NULL
+			&& (*info->eatqty < 1 || *info->eatqty > INTMAX || *info->eatqty < INTMIN)))
 	{
 		printf("Error: invalid arguments\n");
 		return (ERROR);
@@ -74,21 +74,24 @@ static int	invalid_argv(char **argv)
 	return (SUCCESS);
 }
 
+/// @brief 		Initializes all variables ant starts the program
+/// @param argv	Arguments with the info to initialize
+/// @return		SUCCESS if program ran successfully, ERROR otherwise
 static int	init_all(char **argv)
 {
 	t_philo	*p;
 	t_fork	*f;
 	t_info	*info;
 
-	info = info_init(argv);
+	info = init_info(argv);
 	if (!info)
 		return (ERROR);
 	if (mtx_init(info) == ERROR && free_data(info) == SUCCESS)
 		return (ERROR);
-	p = philo_init(info);
+	p = init_philo(info);
 	if (!p)
 		return (ERROR);
-	f = fork_init(p);
+	f = init_fork(p);
 	if (!f)
 		return (ERROR);
 	fork_set(p, f);

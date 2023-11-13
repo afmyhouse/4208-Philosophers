@@ -6,12 +6,15 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:47:55 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/12 19:45:29 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/13 18:07:06 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+/// @brief 		Attribute forks to each philosofer
+/// @param p	Pointer to the list of philosofers
+/// @param f	Pointer to the list of forks
 void	fork_set(t_philo *p, t_fork *f)
 {
 	t_philo	*tmp;
@@ -34,6 +37,11 @@ void	fork_set(t_philo *p, t_fork *f)
 		tmp->f[1] = &f[0];
 }
 
+/// @brief 			Initializes the forks
+/// @param p		Pointer to the list of philosofers
+/// @param fork_id	fork to check status
+/// @param philo_id	philo to check status
+/// @return			SUCCESS if fork is free, ERROR otherwise
 int	fork_check(t_philo *p, int fork_id, int philo_id)
 {
 	int	status;
@@ -57,6 +65,11 @@ int	fork_check(t_philo *p, int fork_id, int philo_id)
 	return (status);
 }
 
+/// @brief 			Updates the fork status
+/// @param p		Pointer to the list of philosofers
+/// @param fork_id	fork to update status
+/// @param philo_id	philo to to update fork status
+/// @return			SUCCESS if fork is free, ERROR otherwise
 int	fork_upd(t_philo *p, int fork_id, int philo_id)
 {
 	if (pthread_mutex_lock(p->info->mtx_fcheck.mtx) == 0)
@@ -92,4 +105,30 @@ int	fork_drop(t_philo *p, int fork_id)
 	return (SUCCESS);
 }
 
+int	fork_take(t_philo *p, int fork_id)
+{
+	struct timeval	t;
+	int				status;
 
+	status = 0;
+	while (fork_check(p, fork_id, 0) != 0)
+		status = check_died(p, &t);
+	if (check_finished(p) == -1)
+		return (status);
+	if (pthread_mutex_lock(p->f[fork_id]->mtx) == 0)
+	{
+		fork_upd(p, fork_id, p->id);
+		if (check_died(p, &t) == 1 || print_status(p, FORK, t) == 1)
+		{
+			if (pthread_mutex_unlock(p->f[fork_id]->mtx) != 0)
+				printf("Error: pthread_mutex_unlock (fork)\n");
+			return (1);
+		}
+	}
+	else
+	{
+		printf("Error: pthread_mutex_lock (fork)\n");
+		return (1);
+	}
+	return (status);
+}

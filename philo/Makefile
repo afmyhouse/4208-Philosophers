@@ -6,34 +6,72 @@
 #    By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/07 13:50:35 by antoda-s          #+#    #+#              #
-#    Updated: 2023/11/12 21:15:31 by antoda-s         ###   ########.fr        #
+#    Updated: 2023/11/13 17:45:36 by antoda-s         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# This is the Makefile for philo, the mandatory part of the project.
-CC				=	cc
-RM				=	rm -f
-CF				=	-Wall -Wextra -Werror
-CFS				=	-Wall -Wextra -Werror -fsanitize=thread
-SRCS			=	main.c time.c init.c mutex.c loop.c \
-					lifeguard.c forks.c free.c ft_tools.c threads.c
-
-OBJS			=	$(SRCS:.c=.o)
-
+# Name:
 NAME			=	philo
 
-all:				$(NAME)
+# Directories:
+OBJSDIR 		= 	build/
 
-$(NAME):			$(OBJS)
-					$(CC) $(CF) $(OBJS) -pthread -o $(NAME)
+# Compiler:
+CC				=	cc
+RM				=	rm -f
+CF				=	-Wall -Wextra -Werror -fsanitize=thread
 
-msani:				$(OBJS)
-					$(CC) $(CFS) -g $(OBJS) -pthread -o $(NAME)
+# Sources:
+FILES			=	main.c
+FILES			+=	time.c
+FILES			+=	init.c
+FILES			+=	mutex.c
+FILES			+=	loop.c
+FILES			+=	lifeguard.c
+FILES			+=	forks.c
+FILES			+=	free.c
+FILES			+=	ft_tools.c
+FILES			+=	threads.c
+
+#OBJS			=	$(FILES:.c=.o)
+OBJS = $(addprefix $(OBJSDIR), $(FILES:.c=.o))
+
+#Colors:
+GRN		=	\e[38;5;118m
+YLW		=	\e[38;5;226m
+RED		=	\e[38;5;196m
+BLU		=	\e[38:5:31m
+WHT		=	\e[0m
+CYN		:= \33[1;36m
+RESET	:= \033[0m
+BOLD	:= \033[1m
+
+all: $(NAME)
+
+$(NAME): $(OBJS) build
+	@printf "$(GRN)Objects$(WHT) ready!$(WHT)\n\n"
+	@printf "\n$(CYN)Generating $(NAME) executable...$(WHT)\n"
+	$(CC) $(CF) $(OBJS) -lpthread -o $(NAME)
+	@printf "$(GRN)$(NAME)$(WHT) Ready!\n\n"
+
+build:
+	@mkdir -p $(OBJSDIR)
+	@printf "\n$(CYN)Compiling source files...$(WHT)\n"
+
+$(OBJSDIR)%.o: %.c | build
+	$(CC) $(CF) -c $< -o $@
 
 clean:
-					$(RM) $(OBJS)
+	@printf "\nCleaning all $(GRN)object files$(WHT) from project...\n"
+	$(RM) $(OBJS)
+	$(RM) -r $(OBJSDIR)
 
-fclean:				clean
-					$(RM) $(NAME)
+post:
+	@printf "\nCleaning $(GRN)objects and executables$(WHT) from project...\n"
 
-re:					fclean all
+fclean:	post clean
+	$(RM) $(NAME)
+
+re:	fclean all
+
+.PHONY:	all clean fclean re build post
