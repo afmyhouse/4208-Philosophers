@@ -6,7 +6,7 @@
 #    By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/13 17:39:58 by antoda-s          #+#    #+#              #
-#    Updated: 2023/11/13 19:16:41 by antoda-s         ###   ########.fr        #
+#    Updated: 2023/11/14 12:08:24 by antoda-s         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ FILES			+=	process_bonus.c
 # Objects
 OBJS = $(addprefix $(OBJSDIR), $(FILES:.c=.o))
 
-#Colors:
+# Colors:
 GRN		=	\e[38;5;118m
 YLW		=	\e[38;5;226m
 RED		=	\e[38;5;196m

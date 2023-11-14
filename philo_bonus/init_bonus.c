@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:13:19 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/13 19:06:24 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/14 12:34:12 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,8 +125,8 @@ int	init_semaphore(t_info *info)
 	info->sem_go = sem_open("go", O_CREAT, 0644, info->phqty / 2);
 	if (info->sem_go == SEM_FAILED)
 		return (ERROR);
-	sem_unlink("end");
-	info->sem_end = sem_open("end", O_CREAT, 0644, 0);
+	sem_unlink("finish");
+	info->sem_end = sem_open("finish", O_CREAT, 0644, 0);
 	if (info->sem_end == SEM_FAILED)
 		return (ERROR);
 	sem_unlink("time");

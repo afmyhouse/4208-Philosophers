@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:13:12 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/13 17:52:15 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/14 12:43:24 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,44 +40,32 @@ void	free_philo(t_philo *p)
 	}
 }
 
-int	semunlinker(void)
+int	sem_unlinker(void)
 {
-	if (sem_unlink("forks") != 0 || sem_unlink("print") != 0)
+	if (sem_unlink("forks")
+		|| sem_unlink("print")
+		|| sem_unlink("death")
+		|| sem_unlink("finish")
+		|| sem_unlink("time")
+		|| sem_unlink("go"))
 	{
-		printf("Error: sem_unlink (forks)\n");
-		return (ERROR);
-	}
-	if (sem_unlink("death") != 0 || sem_unlink("end") != 0)
-	{
-		printf("Error: sem_unlink (death)\n");
-		return (ERROR);
-	}
-	if (sem_unlink("time") != 0 || sem_unlink("go") != 0)
-	{
-		printf("Error: sem_unlink (time)\n");
+		printf("Error: sem_unlink (any unlink)\n");
 		return (ERROR);
 	}
 	return (SUCCESS);
 }
 
-int	semdestroyer(t_info *d)
+int	sem_closer(t_info *d)
 {
-	if (sem_close(d->sem_forks) != 0 || sem_close(d->sem_print) != 0)
+	if (sem_close(d->sem_forks)
+		|| sem_close(d->sem_print)
+		|| sem_close(d->sem_death)
+		|| sem_close(d->sem_end)
+		|| sem_close(d->sem_time)
+		|| sem_close(d->sem_go))
 	{
-		printf("Error: sem_close (forks)\n");
+		printf("Error: sem_close (any close)\n");
 		return (ERROR);
 	}
-	if (sem_close(d->sem_death) != 0 || sem_close(d->sem_end) != 0)
-	{
-		printf("Error: sem_close (death)\n");
-		return (ERROR);
-	}
-	if (sem_close(d->sem_time) != 0 || sem_close(d->sem_go) != 0)
-	{
-		printf("Error: sem_close (time)\n");
-		return (ERROR);
-	}
-	if (semunlinker() == 1)
-		return (ERROR);
-	return (SUCCESS);
+	return (sem_unlinker());
 }

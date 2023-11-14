@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:13:04 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/13 19:19:36 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/14 12:35:07 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,8 @@ int				fork_drop(t_philo *p);
 void			endr(t_philo *p);
 int				philo_service(t_philo *p);
 
-int				semunlinker(void);
-int				semdestroyer(t_info *d);
+int				sem_unlinker(void);
+int				sem_closer(t_info *d);
 int				free_data(t_info *d);
 void			free_philo(t_philo *p);
 

@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:13:27 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/13 19:21:07 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/14 12:35:07 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,28 +75,36 @@ static int	invalid_argv(char **argv)
 	return (0);
 }
 
-
-
-int	main(int argc, char **argv)
+/// @brief 		Initializes all variables ant starts the program
+/// @param argv	Arguments with the info to initialize
+/// @return		SUCCESS if program ran successfully, ERROR otherwise
+static int	init_all(char **argv)
 {
 	t_info	*info;
 	t_philo	*p;
 
-	if (invalid_argc(argc) == 1 || invalid_argv(argv) == 1)
-		return (1);
 	info = init_info(argv);
 	if (!info)
-		return (1);
+		return (ERROR);
 	p = init_philo(info);
 	if (!p)
-		return (1);
+		return (ERROR);
 	if (init_semaphore(info) == 1 || set_processes(p) == 1)
 	{
 		free_philo(p);
-		return (1);
+		return (ERROR);
 	}
 	philo_service(p);
-	semdestroyer(info);
+	sem_closer(info);
 	free_philo(p);
 	return (0);
+}
+
+int	main(int argc, char **argv)
+{
+	if (invalid_argc(argc) == 1 || invalid_argv(argv) == 1)
+		return (1);
+	if (init_all(argv) == ERROR)
+		return (ERROR);
+	return (SUCCESS);
 }
