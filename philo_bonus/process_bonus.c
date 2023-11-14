@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 18:01:56 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/14 18:49:37 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/14 19:11:04 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ int	set_time_start(t_philo *p)
 	return (SUCCESS);
 }
 
-/// @brief 		Checks if the philo is dead
-/// @param p	Pointer to the philosofer
+/// @brief 		Fetchs current time to philo timer
+/// @param p	Pointer to the philosofer structure
 /// @return		SUCCESS if philo is dead, 0 otherwise
 int	set_time_sem(t_philo *p)
 {
