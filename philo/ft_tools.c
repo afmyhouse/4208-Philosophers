@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:47:50 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/12 17:46:44 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/14 17:08:07 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,4 @@ long long	ft_min(long long a, long long b)
 	if (a < b)
 		return (a);
 	return (b);
-}
-
-void	ft_msec2usec(void *t)
-{
-	*(long long *)t = *(long long *)t * 1000;
 }

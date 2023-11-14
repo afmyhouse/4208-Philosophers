@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:48:01 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/12 21:26:50 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/14 17:08:13 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,9 @@ long long	utime(struct timeval t)
 long long	dtime(struct timeval t0, struct timeval t1)
 {
 	return ((utime(t1) - utime(t0)) / 1000);
+}
+
+void	ft_msec2usec(void *t)
+{
+	*(long long *)t = *(long long *)t * 1000;
 }

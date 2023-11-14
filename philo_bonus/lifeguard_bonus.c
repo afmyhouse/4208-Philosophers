@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:12:39 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/14 15:34:19 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/14 18:44:26 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,15 @@ int	print_status(t_philo *p, int state, struct timeval t)
 	{
 		if (state == FORK)
 			printf("%lld %d has taken a fork\n", \
-				dtime(p->d->offset, t), p->id);
+				dtime(p->d->tstart, t), p->id);
 		else if (state == EAT)
-			printf("%lld %d is eating\n", dtime(p->d->offset, t), p->id);
+			printf("%lld %d is eating\n", dtime(p->d->tstart, t), p->id);
 		else if (state == SLEEP)
-			printf("%lld %d is sleeping\n", dtime(p->d->offset, t), p->id);
+			printf("%lld %d is sleeping\n", dtime(p->d->tstart, t), p->id);
 		else if (state == THINK)
-			printf("%lld %d is thinking\n", dtime(p->d->offset, t), p->id);
+			printf("%lld %d is thinking\n", dtime(p->d->tstart, t), p->id);
 		else if (state == DEAD)
-			printf("%lld %d died\n", dtime(p->d->offset, t), p->id);
+			printf("%lld %d died\n", dtime(p->d->tstart, t), p->id);
 		if (sem_post(p->d->sem_print) != 0)
 		{
 			printf("Error: sem_post (sem_print)\n");
@@ -78,7 +78,7 @@ void	*lifeguard(void *philo)
 		if (check_died(p) != 0)
 			return (NULL);
 	}
-	return (0);
+	return (SUCCESS);
 }
 
 int	philo_service(t_philo *p)

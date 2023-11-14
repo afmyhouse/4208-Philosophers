@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:13:04 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/14 15:34:01 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/14 18:45:00 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct s_info
 	long long		ttslp;
 	long long		ttthk;
 	long long		*eatqty;
-	struct timeval	offset;
+	struct timeval	tstart;
 	sem_t			*sem_forks;
 	sem_t			*sem_print;
 	sem_t			*sem_death;
@@ -67,48 +67,59 @@ typedef struct s_philo
 	struct s_philo		*next;
 }	t_philo;
 
-//static int	argccheck(int argc);
-//static int	inputcheck(char **argv);
-int	invalid_info(t_info *d);
+/// main_bonus.c index
+int				invalid_info(t_info *d);
+//static int	invalid_argc(int argc)
+//static int	invalid_argv(char **argv)
+//static int	init_all(char **argv)
+//int	main(int argc, char **argv)
 
-struct timeval	now(t_philo *p);
-long long	dtime(struct timeval t0, struct timeval t1);
-long long	utime(struct timeval t);
-int	set_time_sem(t_philo *p);
-int	set_time(struct timeval *t);
-
-t_info			*init_info(char **argv);
-t_philo			*new_philo(int id, t_info *data);
-void			add_philo(t_philo **p, t_philo *new);
-t_philo			*init_philo(t_info *data);
-
-int				set_processes(t_philo *p);
-int				init_semaphore(t_info *data);
-
-int				fork_take(t_philo *p);
-int				p_eat(t_philo *p);
-int				p_sleep(t_philo *p);
-int				p_think(t_philo *p);
-int				philo_loop(t_philo *p);
-
-int				set_offset(t_philo *p);
-int				check_died(t_philo *p);
-int				print_status(t_philo *p, int state, struct timeval t);
-void			*lifeguard(void *philo);
-
+/// forks_bonus.c index
 int				fork_drop(t_philo *p);
+int				fork_take(t_philo *p);
 void			endr(t_philo *p);
-int				philo_service(t_philo *p);
 
-int		sem_unlinker(void);
-int		sems_destroyer(t_info *d);
-int				free_data(t_info *d);
+/// free_bonus.c index
+int				free_data(t_info *info);
 void			free_philo(t_philo *p);
+int				sem_unlinker(void);
+int				sems_destroyer(t_info *d);
 
+/// ft_tools.c index
 size_t			ft_strlen(const char *s);
 long long		ft_long_atoi(const char *nptr);
 void			ft_bzero(void *s, size_t n);
 long long		ft_min(long long a, long long b);
+
+/// init_bonus.c index
+t_philo			*new_philo(int id, t_info *info);
+void			add_philo(t_philo **p, t_philo *new);
+t_philo			*init_philo(t_info *info);
+t_info			*init_info(char **argv);
+int				init_semaphore(t_info *info);
+
+/// lifeguard_bonus.c index
+int				check_died(t_philo *p);
+int				print_status(t_philo *p, int state, struct timeval t);
+void			*lifeguard(void *philo);
+int				philo_service(t_philo *p);
+
+/// loop_bonus.c index
+int				p_eat(t_philo *p);
+int				p_sleep(t_philo *p);
+int				p_think(t_philo *p);
+int				p_loop(t_philo *p);
+
+/// process_bonus.c index
+int				set_processes(t_philo *p);
+int				set_time_start(t_philo *p);
+int				set_time_sem(t_philo *p);
+
+/// time_bonus.c index
+int				set_time(struct timeval *t);
+struct timeval	now(t_philo *p);
+long long		utime(struct timeval t);
+long long		dtime(struct timeval t0, struct timeval t1);
 void			ft_msec2usec(void *t);
 
 #endif

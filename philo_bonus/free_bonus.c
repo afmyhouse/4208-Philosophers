@@ -6,20 +6,25 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:13:12 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/14 15:33:32 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/14 18:42:33 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-int	free_data(t_info *d)
+/// @brief		Free the t_info structure
+/// @param info	Pointer to the t_info structure
+/// @return		SUCCESS if free is successful, ERROR otherwise
+int	free_data(t_info *info)
 {
-	if (d->eatqty != NULL)
-		free(d->eatqty);
-	free(d);
+	if (info->eatqty != NULL)
+		free(info->eatqty);
+	free(info);
 	return (SUCCESS);
 }
 
+/// @brief 		Free the t_philo structure
+/// @param p	Pointer to the t_philo structure
 void	free_philo(t_philo *p)
 {
 	t_philo	*tmp;
@@ -40,6 +45,9 @@ void	free_philo(t_philo *p)
 	}
 }
 
+/// @brief 		Unlink semaphorese
+/// @param		none
+/// @return		SUCCESS if unlink is successful, ERROR otherwise
 int	sem_unlinker(void)
 {
 	if (sem_unlink("forks")
@@ -47,7 +55,7 @@ int	sem_unlinker(void)
 		|| sem_unlink("death")
 		|| sem_unlink("finish")
 		|| sem_unlink("time")
-		|| sem_unlink("go"))
+		|| sem_unlink("start"))
 	{
 		printf("Error: sem_unlink (any unlink)\n");
 		return (ERROR);
@@ -55,6 +63,9 @@ int	sem_unlinker(void)
 	return (SUCCESS);
 }
 
+/// @brief 		Destroy semaphores
+/// @param d	Pointer to the t_info structure
+/// @return		SUCCESS if destroy is successful, ERROR otherwise
 int	sems_destroyer(t_info *d)
 {
 	if (sem_close(d->sem_forks)

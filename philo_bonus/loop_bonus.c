@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:13:46 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/14 15:02:08 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/14 18:36:31 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,40 +20,40 @@ int	p_eat(t_philo *p)
 		if (sem_post(p->d->sem_death) != 0)
 		{
 			printf("Error: sem_post (sem_death)\n");
-			return (1);
+			return (ERROR);
 		}
 	}
 	else
 	{
 		printf("Error: sem_wait (sem_death)\n");
-		return (1);
+		return (ERROR);
 	}
 	print_status(p, EAT, now(p));
 	usleep(ft_min(p->d->tteat, p->d->ttdie));
 	if (fork_drop(p) == 1 || fork_drop(p) == 1)
-		return (1);
+		return (ERROR);
 	if (p->d->eatqty != NULL && ++p->meals == *p->d->eatqty)
 		sem_post(p->d->sem_end);
-	return (0);
+	return (SUCCESS);
 }
 
 int	p_sleep(t_philo *p)
 {
 	if (print_status(p, SLEEP, now(p)) == 1)
-		return (1);
+		return (ERROR);
 	usleep(p->d->ttslp);
-	return (0);
+	return (SUCCESS);
 }
 
 int	p_think(t_philo *p)
 {
 	if (print_status(p, THINK, now(p)) == 1)
-		return (1);
+		return (ERROR);
 	usleep(p->d->ttthk);
-	return (0);
+	return (SUCCESS);
 }
 
-int	philo_loop(t_philo *p)
+int	p_loop(t_philo *p)
 {
 	set_time_sem(p);
 	while (1)
@@ -70,5 +70,5 @@ int	philo_loop(t_philo *p)
 		else
 			endr(p);
 	}
-	return (0);
+	return (SUCCESS);
 }
