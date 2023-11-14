@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:13:12 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/14 12:43:24 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/14 15:33:32 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	sem_unlinker(void)
 	return (SUCCESS);
 }
 
-int	sem_closer(t_info *d)
+int	sems_destroyer(t_info *d)
 {
 	if (sem_close(d->sem_forks)
 		|| sem_close(d->sem_print)

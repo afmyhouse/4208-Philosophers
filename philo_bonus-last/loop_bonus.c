@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:13:46 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/13 19:13:27 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/14 15:02:08 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	p_think(t_philo *p)
 
 int	philo_loop(t_philo *p)
 {
-	set_time(p);
+	set_time_sem(p);
 	while (1)
 	{
 		if (p->d->phqty < 2)

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main_bonus.c                                       :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/13 13:13:27 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/14 12:35:07 by antoda-s         ###   ########.fr       */
+/*   Created: 2023/11/07 13:48:13 by antoda-s          #+#    #+#             */
+/*   Updated: 2023/11/14 15:24:11 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_bonus.h"
+#include "philo.h"
 
 /// @brief 		Check validity the TTDIE, TTEAT, TTSLP, PHQTY parameters
 /// @param info	Pointer to the t_info structure
@@ -39,9 +39,9 @@ static int	invalid_argc(int argc)
 	if (argc < 5 || argc > 6)
 	{
 		printf("Error: invalid number of arguments\n");
-		return (1);
+		return (ERROR);
 	}
-	return (0);
+	return (SUCCESS);
 }
 
 /// @brief 			checks if the arguments are valid
@@ -68,11 +68,11 @@ static int	invalid_argv(char **argv)
 			else
 			{
 				printf("Error: invalid arguments\n");
-				return (1);
+				return (ERROR);
 			}
 		}
 	}
-	return (0);
+	return (SUCCESS);
 }
 
 /// @brief 		Initializes all variables ant starts the program
@@ -80,31 +80,40 @@ static int	invalid_argv(char **argv)
 /// @return		SUCCESS if program ran successfully, ERROR otherwise
 static int	init_all(char **argv)
 {
-	t_info	*info;
 	t_philo	*p;
+	t_fork	*f;
+	t_info	*info;
 
 	info = init_info(argv);
 	if (!info)
 		return (ERROR);
+	if (mtx_init(info) == ERROR && free_data(info) == SUCCESS)
+		return (ERROR);
 	p = init_philo(info);
 	if (!p)
 		return (ERROR);
-	if (init_semaphore(info) == 1 || set_processes(p) == 1)
+	f = init_fork(p);
+	if (!f)
+		return (ERROR);
+	fork_set(p, f);
+	if (set_threads(p) == 1
+		|| join_threads(p) == 1
+		|| mtxs_destroyer(info, f) == 1)
 	{
-		free_philo(p);
+		free_philo(p, f);
 		return (ERROR);
 	}
-	philo_service(p);
-	sem_closer(info);
-	free_philo(p);
-	return (0);
+	free_philo(p, f);
+	return (SUCCESS);
 }
 
+/// @brief 			Main checks arguments are valid and initializes the program
+/// @param argc		Number of arguments
+/// @param argv		Arguments to validate
+/// @return			SUCCESS if program ran successfully, ERROR otherwise
 int	main(int argc, char **argv)
 {
-	if (invalid_argc(argc) == 1 || invalid_argv(argv) == 1)
-		return (1);
-	if (init_all(argv) == ERROR)
+	if (invalid_argc(argc) || invalid_argv(argv))
 		return (ERROR);
-	return (SUCCESS);
+	return (init_all(argv));
 }

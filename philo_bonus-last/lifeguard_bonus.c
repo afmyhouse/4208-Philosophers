@@ -6,40 +6,17 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:12:39 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/14 12:52:57 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/14 15:34:19 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-int	set_offset(t_philo *p)
-{
-	int		i;
-	t_philo	*tmp;
-
-
-	// if (p->info->offset.tv_sec == 0)
-	// 	set_time(&p->info->offset);
-	if (gettimeofday(&p->d->offset, NULL) == -1)
-	{
-		printf("Error: gettimeofday\n");
-		return (ERROR);
-	}
-	i = p->d->phqty;
-	tmp = p;
-	while (i--)
-	{
-		tmp->t0 = p->d->offset;
-		tmp = tmp->next;
-	}
-	return (SUCCESS);
-}
-
 int	check_died(t_philo *p)
 {
 	if (sem_wait(p->d->sem_death) == 0)
 	{
-		if (set_time(p) == 0)
+		if (set_time_sem(p) == 0)
 		{
 			if (utime(p->t) - utime(p->t0) > p->d->ttdie)
 			{

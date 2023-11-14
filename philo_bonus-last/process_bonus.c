@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 18:01:56 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/13 19:15:19 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/14 15:17:26 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,38 @@ int	set_processes(t_philo *p)
 		}
 		else
 			tmp = tmp->next;
+	}
+	return (SUCCESS);
+}
+
+int	set_offset(t_philo *p)
+{
+	int		i;
+	t_philo	*tmp;
+
+	if (set_time(&p->d->offset) == -1)
+		return (ERROR);
+	i = p->d->phqty;
+	tmp = p;
+	while (i--)
+	{
+		tmp->t0 = p->d->offset;
+		tmp = tmp->next;
+	}
+	return (SUCCESS);
+}
+
+int	set_time_sem(t_philo *p)
+{
+	if (sem_wait(p->d->sem_time) == 0)
+	{
+		if (set_time(&p->t) == -1)
+			return (ERROR);
+		if (sem_post(p->d->sem_time) != 0)
+		{
+			printf("Error: sem_post (time)\n");
+			return (ERROR);
+		}
 	}
 	return (SUCCESS);
 }

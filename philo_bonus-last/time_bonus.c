@@ -6,23 +6,18 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:13:52 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/13 18:05:50 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/14 15:04:01 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-int	set_time(t_philo *p)
+int	set_time(struct timeval *t)
 {
-	if (sem_wait(p->d->sem_time) == 0)
+	if (gettimeofday(t, NULL) == -1)
 	{
-		if (gettimeofday(&p->t, NULL) == -1)
-		{
-			printf("Error: gettimeofday\n");
-			return (1);
-		}
-		if (sem_post(p->d->sem_time) != 0)
-			printf("Error: sem_post (time)\n");
+		printf("Error: gettimeofday\n");
+		return (ERROR);
 	}
 	return (SUCCESS);
 }

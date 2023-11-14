@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:13:04 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/14 12:35:07 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/14 15:34:01 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,11 @@ typedef struct s_philo
 //static int	inputcheck(char **argv);
 int	invalid_info(t_info *d);
 
-int				set_time(t_philo *p);
 struct timeval	now(t_philo *p);
-long long		utime(struct timeval t);
-long long		dtime(struct timeval t0, struct timeval t1);
+long long	dtime(struct timeval t0, struct timeval t1);
+long long	utime(struct timeval t);
+int	set_time_sem(t_philo *p);
+int	set_time(struct timeval *t);
 
 t_info			*init_info(char **argv);
 t_philo			*new_philo(int id, t_info *data);
@@ -99,8 +100,8 @@ int				fork_drop(t_philo *p);
 void			endr(t_philo *p);
 int				philo_service(t_philo *p);
 
-int				sem_unlinker(void);
-int				sem_closer(t_info *d);
+int		sem_unlinker(void);
+int		sems_destroyer(t_info *d);
 int				free_data(t_info *d);
 void			free_philo(t_philo *p);
 
