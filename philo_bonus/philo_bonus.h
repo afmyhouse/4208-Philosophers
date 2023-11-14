@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:13:04 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/14 18:45:00 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/14 18:49:37 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef struct s_philo
 {
 	int					id;
 	pid_t				pid;
-	t_info				*d;
+	t_info				*info;
 	struct timeval		t0;
 	struct timeval		t;
 	int					meals;

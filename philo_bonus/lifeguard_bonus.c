@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:12:39 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/14 18:44:26 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/14 18:49:37 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 
 int	check_died(t_philo *p)
 {
-	if (sem_wait(p->d->sem_death) == 0)
+	if (sem_wait(p->info->sem_death) == 0)
 	{
 		if (set_time_sem(p) == 0)
 		{
-			if (utime(p->t) - utime(p->t0) > p->d->ttdie)
+			if (utime(p->t) - utime(p->t0) > p->info->ttdie)
 			{
 				print_status(p, 4, p->t);
 				endr(p);
 				return (SUCCESS);
 			}
 		}
-		if (sem_post(p->d->sem_death) != 0)
+		if (sem_post(p->info->sem_death) != 0)
 		{
 			printf("Error: sem_post (sem_death)\n");
 			return (ERROR);
@@ -41,20 +41,20 @@ int	check_died(t_philo *p)
 
 int	print_status(t_philo *p, int state, struct timeval t)
 {
-	if (sem_wait(p->d->sem_print) == 0)
+	if (sem_wait(p->info->sem_print) == 0)
 	{
 		if (state == FORK)
 			printf("%lld %d has taken a fork\n", \
-				dtime(p->d->tstart, t), p->id);
+				dtime(p->info->tstart, t), p->id);
 		else if (state == EAT)
-			printf("%lld %d is eating\n", dtime(p->d->tstart, t), p->id);
+			printf("%lld %d is eating\n", dtime(p->info->tstart, t), p->id);
 		else if (state == SLEEP)
-			printf("%lld %d is sleeping\n", dtime(p->d->tstart, t), p->id);
+			printf("%lld %d is sleeping\n", dtime(p->info->tstart, t), p->id);
 		else if (state == THINK)
-			printf("%lld %d is thinking\n", dtime(p->d->tstart, t), p->id);
+			printf("%lld %d is thinking\n", dtime(p->info->tstart, t), p->id);
 		else if (state == DEAD)
-			printf("%lld %d died\n", dtime(p->d->tstart, t), p->id);
-		if (sem_post(p->d->sem_print) != 0)
+			printf("%lld %d died\n", dtime(p->info->tstart, t), p->id);
+		if (sem_post(p->info->sem_print) != 0)
 		{
 			printf("Error: sem_post (sem_print)\n");
 			return (ERROR);
@@ -87,9 +87,9 @@ int	philo_service(t_philo *p)
 	t_philo	*tmp;
 
 	tmp = p;
-	i = p->d->phqty;
+	i = p->info->phqty;
 	while (i--)
-		sem_wait(p->d->sem_end);
+		sem_wait(p->info->sem_end);
 	while (tmp->next != NULL && tmp->next != p)
 	{
 		kill(tmp->pid, SIGKILL);

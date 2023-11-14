@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 18:01:56 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/14 18:45:00 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/14 18:49:37 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	set_processes(t_philo *p)
 	pthread_t	thread;
 
 	tmp = p;
-	i = p->d->phqty;
+	i = p->info->phqty;
 	set_time_start(p);
 	while (i--)
 	{
@@ -51,13 +51,13 @@ int	set_time_start(t_philo *p)
 	int		i;
 	t_philo	*tmp;
 
-	if (set_time(&p->d->tstart) == -1)
+	if (set_time(&p->info->tstart) == -1)
 		return (ERROR);
-	i = p->d->phqty;
+	i = p->info->phqty;
 	tmp = p;
 	while (i--)
 	{
-		tmp->t0 = p->d->tstart;
+		tmp->t0 = p->info->tstart;
 		tmp = tmp->next;
 	}
 	return (SUCCESS);
@@ -68,11 +68,11 @@ int	set_time_start(t_philo *p)
 /// @return		SUCCESS if philo is dead, 0 otherwise
 int	set_time_sem(t_philo *p)
 {
-	if (sem_wait(p->d->sem_time) == 0)
+	if (sem_wait(p->info->sem_time) == 0)
 	{
 		if (set_time(&p->t) == -1)
 			return (ERROR);
-		if (sem_post(p->d->sem_time) != 0)
+		if (sem_post(p->info->sem_time) != 0)
 		{
 			printf("Error: sem_post (time)\n");
 			return (ERROR);

@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:13:19 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/14 18:42:33 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/14 18:49:37 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_philo	*new_philo(int id, t_info *info)
 		return (NULL);
 	ft_bzero(p, sizeof(t_philo));
 	p->id = id;
-	p->d = info;
+	p->info = info;
 	return (p);
 }
 
