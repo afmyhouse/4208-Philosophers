@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:14:12 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/14 18:49:37 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/14 23:02:38 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,21 +41,4 @@ int	fork_take(t_philo *p)
 		return (ERROR);
 	}
 	return (SUCCESS);
-}
-
-/// @brief 		Checks if the meal is over
-/// @param p	Pointer to the philosofer
-void	endr(t_philo *p)
-{
-	int	i;
-
-	i = p->info->phqty;
-	while (i--)
-	{
-		if (sem_post(p->info->sem_end) != 0)
-		{
-			printf("Error: sem_post (sem_end)\n");
-			exit(ERROR);
-		}
-	}
 }

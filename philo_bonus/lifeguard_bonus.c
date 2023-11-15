@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:12:39 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/14 18:49:37 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/14 22:55:20 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ int	check_died(t_philo *p)
 	{
 		if (set_time_sem(p) == 0)
 		{
-			if (utime(p->t) - utime(p->t0) > p->info->ttdie)
+			if (utime(p->tnow) - utime(p->t0) > p->info->ttdie)
 			{
-				print_status(p, 4, p->t);
-				endr(p);
+				print_status(p, DEAD, p->tnow);
+				p_finish(p);
 				return (SUCCESS);
 			}
 		}
@@ -81,7 +81,7 @@ void	*lifeguard(void *philo)
 	return (SUCCESS);
 }
 
-int	philo_service(t_philo *p)
+int	philo_kill(t_philo *p)
 {
 	int		i;
 	t_philo	*tmp;

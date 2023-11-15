@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:13:27 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/14 15:35:07 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/14 22:55:20 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,12 +89,12 @@ static int	init_all(char **argv)
 	p = init_philo(info);
 	if (!p)
 		return (ERROR);
-	if (init_semaphore(info) == 1 || set_processes(p) == 1)
+	if (init_semaphore(info) == ERROR || set_processes(p) == ERROR)
 	{
 		free_philo(p);
 		return (ERROR);
 	}
-	philo_service(p);
+	philo_kill(p);
 	sems_destroyer(info);
 	free_philo(p);
 	return (SUCCESS);

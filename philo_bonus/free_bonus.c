@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:13:12 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/14 18:49:37 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/14 22:46:58 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	sems_destroyer(t_info *info)
 		|| sem_close(info->sem_death)
 		|| sem_close(info->sem_end)
 		|| sem_close(info->sem_time)
-		|| sem_close(info->sem_go))
+		|| sem_close(info->sem_start))
 	{
 		printf("Error: sem_close (any close)\n");
 		return (ERROR);

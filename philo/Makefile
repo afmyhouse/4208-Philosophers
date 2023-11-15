@@ -6,7 +6,7 @@
 #    By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/07 13:50:35 by antoda-s          #+#    #+#              #
-#    Updated: 2023/11/13 17:45:36 by antoda-s         ###   ########.fr        #
+#    Updated: 2023/11/15 00:23:02 by antoda-s         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,8 +18,9 @@ OBJSDIR 		= 	build/
 
 # Compiler:
 CC				=	cc
-RM				=	rm -f
-CF				=	-Wall -Wextra -Werror -fsanitize=thread
+CF				=	-Wall -Wextra -Werror
+CS				=	-fsanitize=thread
+CT				=	-pthread
 
 # Sources:
 FILES			=	main.c
@@ -33,8 +34,9 @@ FILES			+=	free.c
 FILES			+=	ft_tools.c
 FILES			+=	threads.c
 
-#OBJS			=	$(FILES:.c=.o)
-OBJS = $(addprefix $(OBJSDIR), $(FILES:.c=.o))
+# Objects:
+OBJS			=	$(FILES:.c=.o)
+#OBJS = $(addprefix $(OBJSDIR), $(FILES:.c=.o))
 
 #Colors:
 GRN		=	\e[38;5;118m
@@ -46,32 +48,33 @@ CYN		:= \33[1;36m
 RESET	:= \033[0m
 BOLD	:= \033[1m
 
+# Default rule
 all: $(NAME)
 
-$(NAME): $(OBJS) build
-	@printf "$(GRN)Objects$(WHT) ready!$(WHT)\n\n"
-	@printf "\n$(CYN)Generating $(NAME) executable...$(WHT)\n"
-	$(CC) $(CF) $(OBJS) -lpthread -o $(NAME)
-	@printf "$(GRN)$(NAME)$(WHT) Ready!\n\n"
+# Rule to build the program
+$(NAME): $(OBJS)
+	@printf "\n=> $(GRN)objects$(WHT) ready!$(WHT)\n"
+	@printf "$(CYN)Generating $(NAME) executable...$(WHT)\n"
+	@$(CC) $(CF) $(CS) $(CT) $(OBJS) -o $(NAME)
+	@printf "=> $(GRN)$(NAME)$(WHT) ready!\n"
 
-build:
-	@mkdir -p $(OBJSDIR)
-	@printf "\n$(CYN)Compiling source files...$(WHT)\n"
+# Rule to build object files from source files
+%.o: %.c
+# %.o: %.c
+	@$(CC) $(CF) $(TC) -c $< -o $@
+	@printf "$(CYN)██$(WHT)"
 
-$(OBJSDIR)%.o: %.c | build
-	$(CC) $(CF) -c $< -o $@
-
+# Rule to clean objects
 clean:
-	@printf "\nCleaning all $(GRN)object files$(WHT) from project...\n"
-	$(RM) $(OBJS)
-	$(RM) -r $(OBJSDIR)
+	@printf "=> Cleaning $(GRN)object files <*.o>$(WHT) from project...\n"
+	@$(RM) $(OBJS)
+#	$(RM) -r $(OBJSDIR)
 
-post:
-	@printf "\nCleaning $(GRN)objects and executables$(WHT) from project...\n"
-
-fclean:	post clean
-	$(RM) $(NAME)
+# Rule to clean objects and executable
+fclean:	clean
+	@printf "=> Cleaning $(GRN)executable <$(NAME)>$(WHT) from project...\n"
+	@$(RM) $(NAME)
 
 re:	fclean all
 
-.PHONY:	all clean fclean re build post
+.PHONY:	all clean fclean re

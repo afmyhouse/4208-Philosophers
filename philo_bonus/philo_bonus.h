@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:13:04 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/14 19:11:49 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/14 22:55:20 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ typedef struct s_info
 	sem_t			*sem_forks;
 	sem_t			*sem_print;
 	sem_t			*sem_death;
-	sem_t			*sem_go;
+	sem_t			*sem_start;
 	sem_t			*sem_end;
 	sem_t			*sem_time;
 }	t_info;
@@ -61,7 +61,7 @@ typedef struct s_philo
 	pid_t				pid;
 	t_info				*info;
 	struct timeval		t0;
-	struct timeval		t;
+	struct timeval		tnow;
 	int					meals;
 	struct s_philo		*prev;
 	struct s_philo		*next;
@@ -77,7 +77,7 @@ int				invalid_info(t_info *d);
 /// forks_bonus.c index
 int				fork_drop(t_philo *p);
 int				fork_take(t_philo *p);
-void			endr(t_philo *p);
+void			p_finish(t_philo *p);
 
 /// free_bonus.c index
 int				free_data(t_info *info);
@@ -102,7 +102,7 @@ int				init_semaphore(t_info *info);
 int				check_died(t_philo *p);
 int				print_status(t_philo *p, int state, struct timeval t);
 void			*lifeguard(void *philo);
-int				philo_service(t_philo *p);
+int				philo_kill(t_philo *p);
 
 /// loop_bonus.c index
 int				p_eat(t_philo *p);
@@ -116,7 +116,7 @@ int				set_time_start(t_philo *p);
 int				set_time_sem(t_philo *p);
 
 /// time_bonus.c index
-int				set_time(struct timeval *t);
+int				get_time(struct timeval *t);
 struct timeval	now(t_philo *p);
 long long		utime(struct timeval t);
 long long		dtime(struct timeval t0, struct timeval t1);

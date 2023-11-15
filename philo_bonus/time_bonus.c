@@ -6,13 +6,13 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 13:13:52 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/14 18:49:37 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/14 19:16:30 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-int	set_time(struct timeval *t)
+int	get_time(struct timeval *t)
 {
 	if (gettimeofday(t, NULL) == -1)
 	{
@@ -29,7 +29,7 @@ struct timeval	now(t_philo *p)
 	ft_bzero(&now, sizeof(struct timeval));
 	if (sem_wait(p->info->sem_time) == 0)
 	{
-		now = p->t;
+		now = p->tnow;
 		if (sem_post(p->info->sem_time) != 0)
 			printf("Error: sem_post (time)\n");
 	}

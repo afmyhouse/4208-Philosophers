@@ -6,7 +6,7 @@
 /*   By: antoda-s <antoda-s@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 18:01:56 by antoda-s          #+#    #+#             */
-/*   Updated: 2023/11/14 19:11:04 by antoda-s         ###   ########.fr       */
+/*   Updated: 2023/11/14 23:02:24 by antoda-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	set_time_start(t_philo *p)
 	int		i;
 	t_philo	*tmp;
 
-	if (set_time(&p->info->tstart) == -1)
+	if (get_time(&p->info->tstart) == -1)
 		return (ERROR);
 	i = p->info->phqty;
 	tmp = p;
@@ -70,7 +70,7 @@ int	set_time_sem(t_philo *p)
 {
 	if (sem_wait(p->info->sem_time) == 0)
 	{
-		if (set_time(&p->t) == -1)
+		if (get_time(&p->tnow) == -1)
 			return (ERROR);
 		if (sem_post(p->info->sem_time) != 0)
 		{
